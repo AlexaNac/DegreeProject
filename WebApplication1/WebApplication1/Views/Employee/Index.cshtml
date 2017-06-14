@@ -1,0 +1,55 @@
+﻿@model IEnumerable<WebApplication1.Models.employee>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Add Employee","New", "Employee")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.first_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.last_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.hire_date)
+        </th>    
+        <th>
+            @Html.DisplayNameFor(model => model.AspNetUser.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.first_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.last_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hire_date, "{0:d MMM yyyy}")
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", "Employee", new { id = item.employee_id},null) |
+            @Html.ActionLink("Edit", "Edit","Employee", new { id = item.employee_id }, null) |
+            @Html.ActionLink("Delete","Delete", "Employee", new { id = item.employee_id }, null)
+        </td>
+    </tr>
+}
+
+</table>

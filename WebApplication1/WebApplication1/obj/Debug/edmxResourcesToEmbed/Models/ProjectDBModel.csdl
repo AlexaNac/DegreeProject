@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProjectDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="client">
+    <Key>
+      <PropertyRef Name="client_id" />
+    </Key>
+    <Property Name="client_id" Type="Guid" Nullable="false" />
+    <Property Name="client_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="adress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="contactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="projects" Relationship="Self.projects_client_id_fk" FromRole="clients" ToRole="projects" />
+    <Property Name="SalesPerson" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ProjectDBModel.Clients_SalesPerson_fk" FromRole="client" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="department">
+    <Key>
+      <PropertyRef Name="department_id" />
+    </Key>
+    <Property Name="department_id" Type="Guid" Nullable="false" />
+    <Property Name="department_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUsers" Relationship="ProjectDBModel.FK_AspNetUsers_Department" FromRole="department" ToRole="AspNetUser" />
+    <Property Name="ManagerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ProjectDBModel.Departments_ManagerId_fk" FromRole="department" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="importance">
+    <Key>
+      <PropertyRef Name="importance_id" />
+    </Key>
+    <Property Name="importance_id" Type="Int32" Nullable="false" />
+    <Property Name="caption" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tasks" Relationship="Self.task_importance_fk" FromRole="importance" ToRole="tasks" />
+  </EntityType>
+  <EntityType Name="job">
+    <Key>
+      <PropertyRef Name="job_id" />
+    </Key>
+    <Property Name="job_id" Type="Guid" Nullable="false" />
+    <Property Name="job_title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="min_salary" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="max_salary" Type="Decimal" Precision="19" Scale="4" />
+    <NavigationProperty Name="AspNetUsers" Relationship="ProjectDBModel.FK_AspNetUsers_Jobs" FromRole="job" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="project">
+    <Key>
+      <PropertyRef Name="project_id" />
+    </Key>
+    <Property Name="project_id" Type="Guid" Nullable="false" />
+    <Property Name="project_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="client_id" Type="Guid" />
+    <NavigationProperty Name="client" Relationship="Self.projects_client_id_fk" FromRole="projects" ToRole="clients" />
+    <NavigationProperty Name="tasks" Relationship="Self.task_project_id_fk" FromRole="projects" ToRole="tasks" />
+    <Property Name="ProjectManager" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ProjectDBModel.Projects_ProjectManager_fk" FromRole="project" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="status">
+    <Key>
+      <PropertyRef Name="status_id" />
+    </Key>
+    <Property Name="status_id" Type="Int32" Nullable="false" />
+    <Property Name="caption" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tasks" Relationship="Self.task_status_fk" FromRole="status" ToRole="tasks" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="task">
+    <Key>
+      <PropertyRef Name="task_id" />
+      <PropertyRef Name="project_id" />
+      <PropertyRef Name="EmployeeId" />
+    </Key>
+    <Property Name="task_id" Type="Guid" Nullable="false" />
+    <Property Name="project_id" Type="Guid" Nullable="false" />
+    <Property Name="task_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="importance_id" Type="Int32" />
+    <Property Name="status_id" Type="Int32" />
+    <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="endDate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="importance" Relationship="Self.task_importance_fk" FromRole="tasks" ToRole="importance" />
+    <NavigationProperty Name="project" Relationship="Self.task_project_id_fk" FromRole="tasks" ToRole="projects" />
+    <NavigationProperty Name="status" Relationship="Self.task_status_fk" FromRole="tasks" ToRole="status" />
+    <Property Name="EmployeeId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ProjectDBModel.task_employee_id_fk" FromRole="task" ToRole="AspNetUser" />
+  </EntityType>
+  <Association Name="projects_client_id_fk">
+    <End Role="clients" Type="Self.client" Multiplicity="0..1" />
+    <End Role="projects" Type="Self.project" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="clients">
+        <PropertyRef Name="client_id" />
+      </Principal>
+      <Dependent Role="projects">
+        <PropertyRef Name="client_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="task_importance_fk">
+    <End Role="importance" Type="Self.importance" Multiplicity="0..1" />
+    <End Role="tasks" Type="Self.task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="importance">
+        <PropertyRef Name="importance_id" />
+      </Principal>
+      <Dependent Role="tasks">
+        <PropertyRef Name="importance_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="task_project_id_fk">
+    <End Role="projects" Type="Self.project" Multiplicity="1" />
+    <End Role="tasks" Type="Self.task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="projects">
+        <PropertyRef Name="project_id" />
+      </Principal>
+      <Dependent Role="tasks">
+        <PropertyRef Name="project_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="task_status_fk">
+    <End Role="status" Type="Self.status" Multiplicity="0..1" />
+    <End Role="tasks" Type="Self.task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="status">
+        <PropertyRef Name="status_id" />
+      </Principal>
+      <Dependent Role="tasks">
+        <PropertyRef Name="status_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ProjectDBContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="clients" EntityType="Self.client" />
+    <EntitySet Name="departments" EntityType="Self.department" />
+    <EntitySet Name="importances" EntityType="Self.importance" />
+    <EntitySet Name="jobs" EntityType="Self.job" />
+    <EntitySet Name="projects" EntityType="Self.project" />
+    <EntitySet Name="status" EntityType="Self.status" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="tasks" EntityType="Self.task" />
+    <AssociationSet Name="projects_client_id_fk" Association="Self.projects_client_id_fk">
+      <End Role="clients" EntitySet="clients" />
+      <End Role="projects" EntitySet="projects" />
+    </AssociationSet>
+    <AssociationSet Name="task_importance_fk" Association="Self.task_importance_fk">
+      <End Role="importance" EntitySet="importances" />
+      <End Role="tasks" EntitySet="tasks" />
+    </AssociationSet>
+    <AssociationSet Name="task_project_id_fk" Association="Self.task_project_id_fk">
+      <End Role="projects" EntitySet="projects" />
+      <End Role="tasks" EntitySet="tasks" />
+    </AssociationSet>
+    <AssociationSet Name="task_status_fk" Association="Self.task_status_fk">
+      <End Role="status" EntitySet="status" />
+      <End Role="tasks" EntitySet="tasks" />
+    </AssociationSet>
+    <EntitySet Name="C__MigrationHistory" EntityType="ProjectDBModel.C__MigrationHistory" />
+    <EntitySet Name="AspNetRoles" EntityType="ProjectDBModel.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="ProjectDBModel.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="ProjectDBModel.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="ProjectDBModel.AspNetUser" />
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="ProjectDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ProjectDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="ProjectDBModel.AspNetUserRoles">
+      <End Role="AspNetRole" EntitySet="AspNetRoles" />
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AspNetUsers_Department" Association="ProjectDBModel.FK_AspNetUsers_Department">
+      <End Role="department" EntitySet="departments" />
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AspNetUsers_Jobs" Association="ProjectDBModel.FK_AspNetUsers_Jobs">
+      <End Role="job" EntitySet="jobs" />
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AspNetUsers_Manager" Association="ProjectDBModel.FK_AspNetUsers_Manager">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUser1" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <AssociationSet Name="Clients_SalesPerson_fk" Association="ProjectDBModel.Clients_SalesPerson_fk">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="client" EntitySet="clients" />
+    </AssociationSet>
+    <AssociationSet Name="Departments_ManagerId_fk" Association="ProjectDBModel.Departments_ManagerId_fk">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="department" EntitySet="departments" />
+    </AssociationSet>
+    <AssociationSet Name="task_employee_id_fk" Association="ProjectDBModel.task_employee_id_fk">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="task" EntitySet="tasks" />
+    </AssociationSet>
+    <AssociationSet Name="Projects_ProjectManager_fk" Association="ProjectDBModel.Projects_ProjectManager_fk">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="project" EntitySet="projects" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUsers" Relationship="ProjectDBModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ProjectDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ProjectDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="HireDate" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="ProjectDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="ProjectDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+    <NavigationProperty Name="AspNetRoles" Relationship="ProjectDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+    <Property Name="BirthDate" Type="DateTime" Precision="0" />
+    <Property Name="JobId" Type="Guid" Nullable="false" />
+    <Property Name="Salary" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="DepartmentId" Type="Guid" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ManagerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="department" Relationship="ProjectDBModel.FK_AspNetUsers_Department" FromRole="AspNetUser" ToRole="department" />
+    <NavigationProperty Name="job" Relationship="ProjectDBModel.FK_AspNetUsers_Jobs" FromRole="AspNetUser" ToRole="job" />
+    <NavigationProperty Name="AspNetUsers1" Relationship="ProjectDBModel.FK_AspNetUsers_Manager" FromRole="AspNetUser" ToRole="AspNetUser1" />
+    <NavigationProperty Name="AspNetUser1" Relationship="ProjectDBModel.FK_AspNetUsers_Manager" FromRole="AspNetUser1" ToRole="AspNetUser" />
+    <NavigationProperty Name="clients" Relationship="ProjectDBModel.Clients_SalesPerson_fk" FromRole="AspNetUser" ToRole="client" />
+    <NavigationProperty Name="departments" Relationship="ProjectDBModel.Departments_ManagerId_fk" FromRole="AspNetUser" ToRole="department" />
+    <NavigationProperty Name="tasks" Relationship="ProjectDBModel.task_employee_id_fk" FromRole="AspNetUser" ToRole="task" />
+    <NavigationProperty Name="projects" Relationship="ProjectDBModel.Projects_ProjectManager_fk" FromRole="AspNetUser" ToRole="project" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="ProjectDBModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaim">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="ProjectDBModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Type="ProjectDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+  </Association>
+  <Association Name="FK_AspNetUsers_Department">
+    <End Type="ProjectDBModel.department" Role="department" Multiplicity="1" />
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="department">
+        <PropertyRef Name="department_id" />
+      </Principal>
+      <Dependent Role="AspNetUser">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AspNetUsers_Jobs">
+    <End Type="ProjectDBModel.job" Role="job" Multiplicity="1" />
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="job">
+        <PropertyRef Name="job_id" />
+      </Principal>
+      <Dependent Role="AspNetUser">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AspNetUsers_Manager">
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUser1">
+        <PropertyRef Name="ManagerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Clients_SalesPerson_fk">
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+    <End Type="ProjectDBModel.client" Role="client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="client">
+        <PropertyRef Name="SalesPerson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Departments_ManagerId_fk">
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+    <End Type="ProjectDBModel.department" Role="department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="department">
+        <PropertyRef Name="ManagerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="task_employee_id_fk">
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+    <End Type="ProjectDBModel.task" Role="task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="task">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Projects_ProjectManager_fk">
+    <End Type="ProjectDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+    <End Type="ProjectDBModel.project" Role="project" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="project">
+        <PropertyRef Name="ProjectManager" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,66 @@
+﻿@using WebApplication1.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html style="background-color: #2c3e50">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <title>Login</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="background-color: #2c3e50; color: white">
+    <div class="center-align row">
+        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2">
+            <section id="loginForm">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                    <div>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                    <div>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                   <div class="checkbox" style="padding-left:7%">
+                       @Html.CheckBoxFor(m => m.RememberMe)
+                       @Html.LabelFor(m => m.RememberMe)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <input type="submit" value="Log in" class="btn btn-success btn-block" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <a href="https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=867v0zbln7wqzu&redirect_uri=http://localhost:54480/Linkedin/Authentication&state=987654321&scope=r_basicprofile" class="btn btn-default btn-block">Login with LinkedIN</a>
+                    </div>
+                </div>
+                    @* Enable this once you have account confirmation enabled for password reset functionality
+                        <p>
+                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                        </p>*@
+                    }
+</section>
+        </div>
+    </div>
+</body>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+</html>

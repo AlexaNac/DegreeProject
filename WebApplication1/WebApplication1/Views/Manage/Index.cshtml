@@ -1,0 +1,100 @@
+﻿@model WebApplication1.Models.IndexViewModel
+@{
+    ViewBag.Title = "Account informations";
+    ViewBag.Link = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=867v0zbln7wqzu&redirect_uri=http://localhost:54480/Linkedin/Authentication&state=987654321&scope=r_basicprofile" ;
+}
+
+<h2>Account manager</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Details and account manager</h4>
+    <hr />
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.Employee.first_name, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.TextBoxFor(m => m.Employee.first_name, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.Employee.last_name, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.TextBoxFor(m => m.Employee.last_name, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.Employee.hire_date, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.TextBoxFor(m => m.Employee.hire_date, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.User.UserName, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.TextBoxFor(m => m.User.UserName, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.User.Email, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.TextBoxFor(m => m.User.Email, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        @if (Model.HasPassword)
+        {@Html.ActionLink("Change your password", "ChangePassword")}
+        else {@Html.ActionLink("Create password", "SetPassword")}
+    </div>
+    <div class="form-group">
+        <a href=@ViewBag.Link class="btn btn-default btn-block">Login with LinkedIN</a>
+    </div>
+    @*
+        <dt>External Logins:</dt>
+        <dd>
+            @Model.Logins.Count [
+            @Html.ActionLink("Manage", "ManageLogins") ]
+        </dd>
+    *@
+    @*
+        Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+         See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+            for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+         Uncomment the following block after you have set up two-factor authentication
+    *@
+    @*
+        <dt>Phone Number:</dt>
+        <dd>
+            @(Model.PhoneNumber ?? "None") [
+            @if (Model.PhoneNumber != null)
+            {
+                @Html.ActionLink("Change", "AddPhoneNumber")
+                @: &nbsp;|&nbsp;
+                @Html.ActionLink("Remove", "RemovePhoneNumber")
+            }
+            else
+            {
+                @Html.ActionLink("Add", "AddPhoneNumber")
+            }
+            ]
+        </dd>
+    *@
+
+    @*<dt>Two-Factor Authentication:</dt>
+        <dd>
+            <p>
+                There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication.
+            </p>
+            @if (Model.TwoFactor)
+                {
+                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Enabled
+                        <input type="submit" value="Disable" class="btn btn-link" />
+                        </text>
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Disabled
+                        <input type="submit" value="Enable" class="btn btn-link" />
+                        </text>
+                    }
+                }
+        </dd>*@
+</div>
