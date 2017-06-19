@@ -62,7 +62,8 @@ namespace WebApplication1.Controllers
                 }
                 else
                 {
-                    return await LoginUser(profile);
+                    await LoginUser(profile);
+                    return RedirectToAction("Index", "Home");
                 }
             }
             catch (Exception e)
@@ -96,17 +97,17 @@ namespace WebApplication1.Controllers
                 if (user != null) { //login
                     LoginViewModel model = new LoginViewModel
                     {
-                        Email = user.Email,
-                        Password = user.PasswordHash,
+                        Username = user.UserName,
+                        Password = "Nemoac1!",
                         RememberMe = false
                     };
                     AccountController ac = new AccountController();
-                    await ac.Login(model, null);
-                    return RedirectToAction("Index", "Home");
+                    await ac.Login(model, null); 
                 }
                 else
                     return RedirectToAction("Login", "Account");
             }
+            return null;
         }
     }
 }
