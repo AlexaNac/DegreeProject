@@ -7,6 +7,9 @@
 <h2>Account manager</h2>
 <div>
     <h4>Details and account manager</h4>
+    <div class="form-group">
+        <a href=@ViewBag.Link class="btn btn-default">Link with LinkedIN</a>
+    </div>
     <hr />
     <div class="form-group">
         <div>@Html.LabelFor(m => m.Employee.first_name, new { @class = "col-md-4 control-label" })</div>
@@ -33,9 +36,7 @@
         {@Html.ActionLink("Change your password", "ChangePassword")}
         else {@Html.ActionLink("Create password", "SetPassword")}
     </div>
-    <div class="form-group">
-        <a href=@ViewBag.Link class="btn btn-default btn-block">Sign in with LinkedIN</a>
-    </div>
+    
     @*
         <dt>External Logins:</dt>
         <dd>

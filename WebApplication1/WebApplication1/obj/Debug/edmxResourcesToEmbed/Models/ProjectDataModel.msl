@@ -145,6 +145,8 @@
     <EntitySetMapping Name="tasks">
       <EntityTypeMapping TypeName="ProjectDBModel.task">
         <MappingFragment StoreEntitySet="tasks">
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="time" ColumnName="time" />
           <ScalarProperty Name="task_id" ColumnName="task_id" />
           <ScalarProperty Name="employee_id" ColumnName="employee_id" />
           <ScalarProperty Name="project_id" ColumnName="project_id" />

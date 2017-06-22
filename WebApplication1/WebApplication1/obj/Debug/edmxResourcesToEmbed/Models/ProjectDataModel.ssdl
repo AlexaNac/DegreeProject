@@ -142,7 +142,6 @@
   <EntityType Name="tasks">
     <Key>
       <PropertyRef Name="task_id" />
-      <PropertyRef Name="employee_id" />
       <PropertyRef Name="project_id" />
     </Key>
     <Property Name="task_id" Type="uniqueidentifier" Nullable="false" />
@@ -153,6 +152,8 @@
     <Property Name="status_id" Type="int" />
     <Property Name="startDate" Type="date" Nullable="false" />
     <Property Name="endDate" Type="date" Nullable="false" />
+    <Property Name="time" Type="int" />
+    <Property Name="detail" Type="varchar(max)" />
   </EntityType>
   <Association Name="client_salesPerson_fk">
     <End Role="employees" Type="Self.employees" Multiplicity="0..1" />

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace WebApplication1.Controllers
 {
@@ -40,7 +41,7 @@ namespace WebApplication1.Controllers
                 };
             }
             return View(employeeModel);
-        }
+        }new 
 
         public ActionResult Edit(Guid id)
         {
@@ -51,7 +52,8 @@ namespace WebApplication1.Controllers
             }       
             if(emp == null)
             {
-                RedirectToAction("Index", "Employee");// HttpNotFound();
+                //RedirectToAction("Index", "Employee");
+                return HttpNotFound();
             }
             return View(emp);
         }
@@ -93,7 +95,14 @@ namespace WebApplication1.Controllers
         {
             if (!ModelState.IsValid)
             {
-                RedirectToAction("New","Employee", emp);
+                using (var _context = new ProjectDBContext())
+                {
+                    emp.departments = _context.departments.ToList();
+                    emp.jobs = _context.jobs.ToList();
+                    emp.employees1 = _context.employees.ToList();
+                    emp.users = _context.AspNetUsers.ToList();
+                }
+                return View("New", emp);
             }
             employee newemp;
             using (var _context = new ProjectDBContext())
@@ -119,17 +128,57 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Edit","Employee", newemp.employee_id);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(Guid id)
+        [HttpGet]
+        public async Task<ActionResult> Delete(Guid? id, bool? saveChangesError = false)
         {
-            employee employeeDB;
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            var employee = new employee();
             using (var _context = new ProjectDBContext())
             {
-                employeeDB = _context.employees.Single(e => e.employee_id == id);
-                _context.employees.Remove(employeeDB);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Employee");
+                employee = _context.employees
+                .SingleOrDefault(e => e.employee_id == id);
+            }
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(employee emp)
+        {       
+            using (var _context = new ProjectDBContext())
+            {
+                var employee = _context.employees
+                .SingleOrDefault(e => e.employee_id == emp.employee_id);
+                if (employee == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                try
+                {
+                    _context.employees.Remove(employee);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    return RedirectToAction("Delete", new { id = emp.employee_id, saveChangesError = true });
+                }
             }
         }
     }

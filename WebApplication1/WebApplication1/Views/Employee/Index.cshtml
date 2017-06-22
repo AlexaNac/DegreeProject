@@ -8,8 +8,9 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Add Employee","New", "Employee")
+    <div class="btn btn-default"> @Html.Action("Add Employee", "New", "Employee") </div>
 </p>
+<hr/>
 <table class="table">
     <tr>
         <th>
@@ -24,9 +25,6 @@
         <th>
             @Html.DisplayNameFor(model => model.hire_date)
         </th>    
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUser.UserName)
-        </th>
         <th></th>
     </tr>
 

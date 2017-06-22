@@ -147,7 +147,6 @@
         <EntityType Name="tasks">
           <Key>
             <PropertyRef Name="task_id" />
-            <PropertyRef Name="employee_id" />
             <PropertyRef Name="project_id" />
           </Key>
           <Property Name="task_id" Type="uniqueidentifier" Nullable="false" />
@@ -158,6 +157,8 @@
           <Property Name="status_id" Type="int" />
           <Property Name="startDate" Type="date" Nullable="false" />
           <Property Name="endDate" Type="date" Nullable="false" />
+          <Property Name="time" Type="int" />
+          <Property Name="detail" Type="varchar(max)" />
         </EntityType>
         <Association Name="client_salesPerson_fk">
           <End Role="employees" Type="Self.employees" Multiplicity="0..1" />
@@ -604,7 +605,6 @@
         <EntityType Name="task">
           <Key>
             <PropertyRef Name="task_id" />
-            <PropertyRef Name="employee_id" />
             <PropertyRef Name="project_id" />
           </Key>
           <Property Name="task_id" Type="Guid" Nullable="false" />
@@ -619,6 +619,8 @@
           <NavigationProperty Name="importance" Relationship="Self.task_importance_fk" FromRole="tasks" ToRole="importance" />
           <NavigationProperty Name="project" Relationship="Self.task_project_id_fk" FromRole="tasks" ToRole="projects" />
           <NavigationProperty Name="status" Relationship="Self.task_status_fk" FromRole="tasks" ToRole="status" />
+          <Property Name="time" Type="Int32" />
+          <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1022,6 +1024,8 @@
           <EntitySetMapping Name="tasks">
             <EntityTypeMapping TypeName="ProjectDBModel.task">
               <MappingFragment StoreEntitySet="tasks">
+                <ScalarProperty Name="detail" ColumnName="detail" />
+                <ScalarProperty Name="time" ColumnName="time" />
                 <ScalarProperty Name="task_id" ColumnName="task_id" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
                 <ScalarProperty Name="project_id" ColumnName="project_id" />

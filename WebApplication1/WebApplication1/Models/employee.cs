@@ -22,8 +22,8 @@ namespace WebApplication1.Models
             this.employees1 = new HashSet<employee>();
             this.projects = new HashSet<project>();
             this.tasks = new HashSet<task>();
-            this.users = new HashSet<AspNetUser>();
             this.jobs = new HashSet<job>();
+            this.users = new HashSet<AspNetUser>();
         }
     
         public System.Guid employee_id { get; set; }
@@ -38,26 +38,22 @@ namespace WebApplication1.Models
         public Nullable<System.Guid> manager_id { get; set; }
         public Nullable<System.Guid> department_id { get; set; }
         public string user_id { get; set; }
-        public virtual department department { get; set; }
-        public virtual job job { get; set; }
-        public virtual employee employee1 { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<client> clients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<department> departments { get; set; }
-        
+        public virtual department department { get; set; }
+        public virtual job job { get; set; }
+        public virtual ICollection<job> jobs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<employee> employees1 { get; set; }
-        
+        public virtual employee employee1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project> projects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task> tasks { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<job> jobs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual AspNetUser AspNetUser { get; set; }
         public virtual ICollection<AspNetUser> users { get; set; }
-
     }
 }

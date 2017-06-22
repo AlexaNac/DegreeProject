@@ -160,7 +160,6 @@
   <EntityType Name="task">
     <Key>
       <PropertyRef Name="task_id" />
-      <PropertyRef Name="employee_id" />
       <PropertyRef Name="project_id" />
     </Key>
     <Property Name="task_id" Type="Guid" Nullable="false" />
@@ -175,6 +174,8 @@
     <NavigationProperty Name="importance" Relationship="Self.task_importance_fk" FromRole="tasks" ToRole="importance" />
     <NavigationProperty Name="project" Relationship="Self.task_project_id_fk" FromRole="tasks" ToRole="projects" />
     <NavigationProperty Name="status" Relationship="Self.task_status_fk" FromRole="tasks" ToRole="status" />
+    <Property Name="time" Type="Int32" />
+    <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">

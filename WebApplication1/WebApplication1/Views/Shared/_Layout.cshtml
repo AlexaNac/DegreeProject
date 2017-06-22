@@ -7,6 +7,8 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 
 </head>
 <body>
@@ -18,19 +20,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("ERPAS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("Accounts", "About", "Home")</li>*@                 
                 </ul>
                 <!--Html.Partial("_LoginPartial") mai trebuie arond in fata-->
                 <ul class="navbar-text navbar-right">
                     <li class="dropdown-toggle" id="usernameButton" data-toggle="dropdown">
                         <span>@User.Identity.GetUserName()</span>
-                        <span class="glyphicon glyphicon-triangle-bottom" style="color:#2c3e50;font-size: 10px;position: relative;right: -10px;top: -1px;"></span>
+                        <span class="glyphicon glyphicon-user" style="color:#2c3e50;font-size: 10px;position: relative;right: -10px;top: -1px;"></span>
                     </li>
                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-left hidden" })){@Html.AntiForgeryToken()}
                    <ul class="dropdown-menu" role="menu" id="dropdown">
@@ -46,12 +47,11 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year -ERPAS Anic Software</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
