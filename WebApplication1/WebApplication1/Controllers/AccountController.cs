@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using System.Data.Entity;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 
 namespace WebApplication1.Controllers
 {
@@ -21,6 +24,95 @@ namespace WebApplication1.Controllers
         public AccountController()
         {
         }
+
+        //--------------------------------------My Code-----------------------------------------
+
+        public ActionResult Index()
+        {
+            IEnumerable<AspNetUser> users;
+            using (var _context = new ProjectDBContext())
+            {
+                users = _context.AspNetUsers.ToList();
+            }
+            return View(users);
+        }
+
+        public ActionResult Details(String id)
+        {
+            if(id == null)
+                RedirectToAction("Index", "Account");// HttpNotFound();
+
+            UserViewModel model = new UserViewModel();
+            using (var _context = new ProjectDBContext())
+            {
+                employee employee = _context.employees.Include(e => e.job).Include(e => e.AspNetUser).Include(e => e.department).FirstOrDefault(e => e.user_id == id);
+                AspNetUser user = _context.AspNetUsers.FirstOrDefault(e => e.Id == employee.user_id);
+
+                if (user == null)
+                {
+                    RedirectToAction("Index", "Account");// HttpNotFound();
+                }
+                else {
+                    model.employee = employee;
+                    model.user = user;
+                }
+            } 
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Delete(String id, bool? saveChangesError = false)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            var user = new AspNetUser();
+            using (var _context = new ProjectDBContext())
+            {
+                user = _context.AspNetUsers
+                .SingleOrDefault(e => e.Id == id);
+            }
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(AspNetUser user)
+        {
+            using (var _context = new ProjectDBContext())
+            {
+                var usr = _context.AspNetUsers
+                .SingleOrDefault(e => e.Id == user.Id);
+                if (usr == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                try
+                {
+                    _context.AspNetUsers.Remove(usr);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    return RedirectToAction("Delete", new { id = user.Id, saveChangesError = true });
+                }
+            }
+        }
+        //--------------------------------------My Code-----------------------------------------
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
@@ -156,7 +248,7 @@ namespace WebApplication1.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -164,7 +256,7 @@ namespace WebApplication1.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
                 AddErrors(result);
             }

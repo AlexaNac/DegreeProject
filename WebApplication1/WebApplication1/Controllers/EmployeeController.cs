@@ -25,23 +25,19 @@ namespace WebApplication1.Controllers
 
         public ActionResult New()
         {
-            employee employeeModel;
-            using (var _context = new ProjectDBContext())
+            EmployeeViewModel employeeModel;
+            using (var _context = new ProjectDBContext())   
             {
-                var departmentsList = _context.departments.ToList();
-                var jobsList = _context.jobs.ToList();
-                var managersList = _context.employees.ToList();
-                var usersList = _context.AspNetUsers.ToList();
-                employeeModel = new employee
+                employeeModel = new EmployeeViewModel
                 {
-                    jobs = jobsList,
-                    departments = departmentsList,
-                    employees1 = managersList,
-                    users = usersList
+                    jobs = _context.jobs.ToList(),
+                    departments = _context.departments.ToList(),
+                    managers = _context.employees.ToList(),
+                    users = _context.AspNetUsers.ToList()
                 };
             }
             return View(employeeModel);
-        }new 
+        }
 
         public ActionResult Edit(Guid id)
         {
@@ -78,54 +74,55 @@ namespace WebApplication1.Controllers
         {
             if (!ModelState.IsValid)
             {
-                RedirectToAction("Edit","Employee",emp.employee_id);
+                RedirectToAction("Edit", "Employee", emp.employee_id);
             }
             employee employeeDB;
-            using (var _context = new ProjectDBContext()) {
+            using (var _context = new ProjectDBContext())
+            {
                 employeeDB = _context.employees.Single(e => e.employee_id == emp.employee_id);
                 TryUpdateModel(employeeDB);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Employee");
-            }           
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(employee emp)
+        public async Task<ActionResult> Create(EmployeeViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 using (var _context = new ProjectDBContext())
                 {
-                    emp.departments = _context.departments.ToList();
-                    emp.jobs = _context.jobs.ToList();
-                    emp.employees1 = _context.employees.ToList();
-                    emp.users = _context.AspNetUsers.ToList();
+                    model.departments = _context.departments.ToList();
+                    model.jobs = _context.jobs.ToList();
+                    model.managers = _context.employees.ToList();
+                    model.users = _context.AspNetUsers.ToList();
                 }
-                return View("New", emp);
+                return View("New", model);
             }
             employee newemp;
             using (var _context = new ProjectDBContext())
             {
-                    newemp = new employee
-                    {
-                        employee_id = Guid.NewGuid(),
-                        first_name = emp.first_name,
-                        last_name = emp.last_name,
-                        birth_date = emp.birth_date,
-                        hire_date = emp.hire_date,
-                        job_id = emp.job_id,
-                        department_id = emp.department_id,
-                        phone_number = emp.phone_number,
-                        email = emp.email,
-                        salary = emp.salary,
-                        user_id = emp.user_id,
-                        manager_id = emp.manager_id
-                    };
+                newemp = new employee
+                {
+                    employee_id = Guid.NewGuid(),
+                    first_name = model.employee.first_name,
+                    last_name = model.employee.last_name,
+                    birth_date = model.employee.birth_date,
+                    hire_date = model.employee.hire_date,
+                    job_id = model.employee.job_id,
+                    department_id = model.employee.department_id,
+                    phone_number = model.employee.phone_number,
+                    email = model.employee.email,
+                    salary = model.employee.salary,
+                    user_id = model.employee.user_id,
+                    manager_id = model.employee.manager_id
+                };
                 _context.employees.Add(newemp);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Edit","Employee", newemp.employee_id);
+            return RedirectToAction("Edit","Employee", new { id = newemp.employee_id});
         }
 
         [HttpGet]
@@ -152,7 +149,6 @@ namespace WebApplication1.Controllers
                     "Delete failed. Try again, and if the problem persists " +
                     "see your system administrator.";
             }
-
             return View(employee);
         }
 

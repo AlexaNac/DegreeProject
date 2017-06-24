@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication1.Models.AspNetUser>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<p>
+    <div class="btn btn-default"> @Html.ActionLink("Add Account", "Register", "Account") </div>
+</p>
+<hr />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", "Account", new { id = item.Id }, null)
+                @Html.ActionLink("Delete", "Delete", "Account", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+

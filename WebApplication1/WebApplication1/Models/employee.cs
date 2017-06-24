@@ -17,13 +17,11 @@ namespace WebApplication1.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public employee()
         {
-            this.clients = new HashSet<client>();
-            this.departments = new HashSet<department>();
-            this.employees1 = new HashSet<employee>();
-            this.projects = new HashSet<project>();
-            this.tasks = new HashSet<task>();
-            this.jobs = new HashSet<job>();
-            this.users = new HashSet<AspNetUser>();
+            //this.clients = new HashSet<client>();
+            //this.departments = new HashSet<department>();
+            //this.employees1 = new HashSet<employee>();
+            //this.projects = new HashSet<project>();
+            //this.tasks = new HashSet<task>();
         }
     
         public System.Guid employee_id { get; set; }
@@ -45,7 +43,6 @@ namespace WebApplication1.Models
         public virtual ICollection<department> departments { get; set; }
         public virtual department department { get; set; }
         public virtual job job { get; set; }
-        public virtual ICollection<job> jobs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<employee> employees1 { get; set; }
         public virtual employee employee1 { get; set; }
@@ -54,6 +51,5 @@ namespace WebApplication1.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task> tasks { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual ICollection<AspNetUser> users { get; set; }
     }
 }

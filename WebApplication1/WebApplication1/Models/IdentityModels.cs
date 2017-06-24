@@ -26,6 +26,15 @@ namespace WebApplication1.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        //public DbSet<job> jobs { get; set; }
+        //public DbSet<employee> employees { get; set; }
+        //public DbSet<employee> managers { get; set; }
+        //public DbSet<task> tasks { get; set; }
+        //public DbSet<department> departments { get; set; }
+        //public DbSet<AspNetUser> users { get; set; }
+        //public DbSet<project> projects { get; set; }
+        //public DbSet<client> clients { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
