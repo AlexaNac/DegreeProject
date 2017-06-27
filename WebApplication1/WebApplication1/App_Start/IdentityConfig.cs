@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using System.Net.Mail;
 
 namespace WebApplication1
 {
@@ -19,7 +20,24 @@ namespace WebApplication1
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            return ConfigSendGridasyncAsync(message);
+        }
+        private async Task ConfigSendGridasyncAsync(IdentityMessage message)
+        {
+            #region formatter 
+            var mailMessage = new MailMessage();
+            mailMessage.To.Add(new MailAddress(message.Destination));
+            mailMessage.Subject = message.Subject;
+            mailMessage.Body = message.Body;
+            mailMessage.IsBodyHtml = true;
+            #endregion
+
+            using (var smtp = new SmtpClient())
+            {
+                await smtp.SendMailAsync(mailMessage);
+
+            }
+
         }
     }
 
@@ -54,10 +72,10 @@ namespace WebApplication1
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false
             };
 
             // Configure user lockout defaults

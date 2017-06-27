@@ -1,0 +1,86 @@
+﻿@model WebApplication1.Models.ProjectViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Details</h2>
+@Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Here you cand see the details of an department</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <h4> Department information</h4>
+    <hr />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.project.project_name, "Project name", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.project.project_name, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.project.employee.last_name, "Project manager", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.project.employee.last_name, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.project.client.client_name, "Client", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.project.client.client_name, new { @class = "form-control", @readonly = "readonly" })
+        </div> 
+    </div>
+    <hr />
+    <h4>List of tasks</h4>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                Task
+            </th>
+            <th>
+                Assigned to
+            </th>
+            <th>
+                Importance
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Deadline
+            </th>
+        </tr>
+        @foreach (var item in Model.tasks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.task_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.employee.last_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importance.caption)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status.caption)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.endDate, "{0:d MMM yyyy}")
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", "Task", new { id = item.employee_id }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.project.project_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

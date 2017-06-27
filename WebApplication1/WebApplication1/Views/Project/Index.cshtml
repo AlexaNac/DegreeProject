@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebApplication1.Models.project>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "New")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Project name
+        </th>
+        <th>
+            Project manager
+        </th>
+        <th>
+            Client
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.project_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee.last_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.client.client_name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.project_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.project_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.project_id })
+
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,74 @@
+﻿@model WebApplication1.Models.ClientViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Details</h2>
+@Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Here you cand see the details of an client</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <h4> Department information</h4>
+    <hr />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.client.client_name, "Client name", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.client.client_name, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.client.contactPhone, "Contact phone", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.client.contactPhone, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.client.adress, "Adress", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.client.adress, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.client.employee.last_name, "Sales employee", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.client.employee.last_name, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <hr />
+    <h4>List of projects</h4>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Project manager
+            </th>            
+        </tr>
+        @foreach (var item in Model.projects)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.project_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.employee.last_name)
+                </td>              
+                <td>
+                    @Html.ActionLink("Details", "Details", "Task", new { id = item.project_id }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.client.client_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

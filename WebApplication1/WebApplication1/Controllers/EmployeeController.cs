@@ -158,8 +158,7 @@ namespace WebApplication1.Controllers
         {       
             using (var _context = new ProjectDBContext())
             {
-                var employee = _context.employees
-                .SingleOrDefault(e => e.employee_id == emp.employee_id);
+                var employee = _context.employees.SingleOrDefault(e => e.employee_id == emp.employee_id);
                 if (employee == null)
                 {
                     return RedirectToAction("Index");

@@ -28,6 +28,8 @@ namespace WebApplication1.Models
     
         public virtual employee employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<project> projects { get; set; }
+        public  ICollection<project> projects { get; set; }
+        public ICollection<employee> employees { get; set; }
+
     }
 }

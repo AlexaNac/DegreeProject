@@ -1,0 +1,81 @@
+﻿@model WebApplication1.Models.JobViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Details</h2>
+@Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Here you cand see the details of an department</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <h4> Department information</h4>
+    <hr />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.job.job_title, "Job title", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.job.job_title, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.job.min_salary, "Salary (MIN)", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.job.min_salary, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.job.max_salary, "Salary (MAX)", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.job.max_salary, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <hr />
+    <h4>List of employees</h4>
+    <hr />
+    <table class="table">
+        <tr>
+            <th>
+                Employee first name
+            </th>
+            <th>
+                Employee last name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Salary
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.employees)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.first_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.last_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.salary, "{0:d MMM yyyy}")
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", "Employee", new { id = item.employee_id }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.job.job_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

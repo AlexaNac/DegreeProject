@@ -10,106 +10,107 @@ using System.Data.Entity.Infrastructure;
 
 namespace WebApplication1.Controllers
 {
-    public class DepartmentController : Controller
+    public class ProjectController : Controller
     {
-        // GET: Department
         public ActionResult Index()
         {
-            IEnumerable<department> departments;
+            IEnumerable<project> projects;
             using (var _context = new ProjectDBContext())
             {
-                departments = _context.departments.Include(e => e.employee).ToList();
+                projects = _context.projects.Include(e=>e.employee).Include(e=>e.client).ToList();
             }
-            return View(departments);
+            return View(projects);
         }
 
         public ActionResult Details(Guid id)
         {
-            DepartmentViewModel dep = new DepartmentViewModel();
+            ProjectViewModel project = new ProjectViewModel();
             using (var _context = new ProjectDBContext())
             {
-                //dep.department = _context.departments.Include(e => e.manager_id).FirstOrDefault(e => e.department_id == id);
-                dep.department = _context.departments.Include(e => e.employee).FirstOrDefault(e => e.department_id == id);
-                dep.employees = _context.employees.Where(e => e.department_id == id).ToList();
+                project.project = _context.projects.Include(e => e.employee).Include(e => e.client).FirstOrDefault(e => e.project_id == id);
+                project.tasks = _context.tasks.Where(e => e.project_id == id).ToList();
             }
-            if (dep.department == null)
+            if (project.project == null)
             {
-                RedirectToAction("Index", "Department");// HttpNotFound();
+                RedirectToAction("Index", "Project");// HttpNotFound();
             }
-            return View(dep);
+            return View(project);
         }
 
         public ActionResult New()
         {
-            DepartmentViewModel departmentModel;
+            ProjectViewModel projectModel;
             using (var _context = new ProjectDBContext())
             {
-                departmentModel = new DepartmentViewModel
+                projectModel = new ProjectViewModel
                 {
-                    employees = _context.employees.ToList(),                 
+                    employees = _context.employees.ToList(),
+                    clients = _context.clients.ToList()
                 };
             }
-            return View(departmentModel);
+            return View(projectModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(DepartmentViewModel model)
+        public async Task<ActionResult> Create(ProjectViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 using (var _context = new ProjectDBContext())
                 {
                     model.employees = _context.employees.ToList();
+                    model.clients = _context.clients.ToList();
                 }
                 return View("New", model);
             }
-            department newdep;
+            project newproject;
             using (var _context = new ProjectDBContext())
             {
-                newdep = new department
+                newproject = new project
                 {
-                    department_id = Guid.NewGuid(),
-                    department_name = model.department.department_name,
-                    manager_id = model.department.manager_id
+                    project_id = Guid.NewGuid(),
+                    project_manager = model.project.project_manager,
+                    project_name = model.project.project_name,
+                    client_id = model.project.client_id
                 };
-                _context.departments.Add(newdep);
+                _context.projects.Add(newproject);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Edit", "Employee", new { id = newdep.department_id });
+            return RedirectToAction("Edit", "Project", new { id = newproject.project_id });
         }
 
         public ActionResult Edit(Guid id)
         {
-            department dep = new department();
+            project project = new project();
             using (var _context = new ProjectDBContext())
             {
-                dep = _context.departments.FirstOrDefault(e => e.department_id == id);
-                dep.employees = _context.employees.ToList();
+                project = _context.projects.Include(e => e.employee).Include(e => e.client).FirstOrDefault(e => e.project_id == id);
+                project.employees = _context.employees.ToList();
             }
-            if (dep == null)
+            if (project == null)
             {
                 //RedirectToAction("Index", "Department");
                 return HttpNotFound();
             }
-            return View(dep);
+            return View(project);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Save(department dep)
+        public async Task<ActionResult> Save(project prj)
         {
             if (!ModelState.IsValid)
             {
-                RedirectToAction("Edit", "Department", dep.department_id);
+                RedirectToAction("Edit", "Project", prj.project_id);
             }
-            department departmentDB;
+            project projectDB;
             using (var _context = new ProjectDBContext())
             {
-                departmentDB = _context.departments.Single(e => e.department_id == dep.department_id);
-                TryUpdateModel(departmentDB);
+                projectDB = _context.projects.Single(e => e.project_id == prj.project_id);
+                TryUpdateModel(projectDB);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Index", "Project");
             }
         }
 
@@ -120,12 +121,12 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
-            var department = new department();
+            var project = new project();
             using (var _context = new ProjectDBContext())
             {
-                department = _context.departments.SingleOrDefault(e => e.department_id == id);
+                project = _context.projects.Include(e => e.employee).Include(e => e.client).SingleOrDefault(e => e.project_id == id);
             }
-            if (department == null)
+            if (project == null)
             {
                 return HttpNotFound();
             }
@@ -136,38 +137,38 @@ namespace WebApplication1.Controllers
                     "Delete failed. Try again, and if the problem persists " +
                     "see your system administrator.";
             }
-            return View(department);
+            return View(project);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(department dep)
+        public async Task<ActionResult> DeleteConfirmed(project proj)
         {
             using (var _context = new ProjectDBContext())
             {
-                department department;
-                IEnumerable<employee> employees = _context.employees.Where(e => e.department_id == dep.department_id).ToList();
-                if (employees.Count() == 0)
+                project project;
+                IEnumerable<task> tasks = _context.tasks.Where(e => e.project_id == proj.project_id).ToList();
+                if (tasks.Count() == 0)
                 {
-                    department = _context.departments.SingleOrDefault(e => e.department_id == dep.department_id);
-                    if (department == null)
+                    project = _context.projects.SingleOrDefault(e => e.project_id == proj.project_id);
+                    if (project == null)
                     {
                         return RedirectToAction("Index");
                     }
                     try
                     {
-                        _context.departments.Remove(department);
+                        _context.projects.Remove(project);
                         await _context.SaveChangesAsync();
                         return RedirectToAction("Index");
                     }
                     catch (DbUpdateException /* ex */)
                     {
                         //Log the error (uncomment ex variable name and write a log.)
-                        return RedirectToAction("Delete", new { id = dep.department_id, saveChangesError = true });
+                        return RedirectToAction("Delete", new { id = proj.project_id, saveChangesError = true });
                     }
                 }
                 else
-                    return RedirectToAction("Delete", new { id = dep.department_id, saveChangesError = true }); //CU EROARE CA ARE EMPLOYEES ASOCIATI;                
+                    return RedirectToAction("Delete", new { id = proj.project_id, saveChangesError = true }); //CU EROARE CA ARE EMPLOYEES ASOCIATI;                
             }
         }
     }

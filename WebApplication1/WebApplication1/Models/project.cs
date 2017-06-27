@@ -18,6 +18,7 @@ namespace WebApplication1.Models
         public project()
         {
             this.tasks = new HashSet<task>();
+            this.employees = new HashSet<employee>();
         }
     
         public System.Guid project_id { get; set; }
@@ -25,9 +26,10 @@ namespace WebApplication1.Models
         public Nullable<System.Guid> project_manager { get; set; }
         public Nullable<System.Guid> client_id { get; set; }
     
-        public virtual client client { get; set; }
-        public virtual employee employee { get; set; }
+        public  client client { get; set; }
+        public  employee employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<task> tasks { get; set; }
+        public ICollection<task> tasks { get; set; }
+        public ICollection<employee> employees { get; set; }
     }
 }

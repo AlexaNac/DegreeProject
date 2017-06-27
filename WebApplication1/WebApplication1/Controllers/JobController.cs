@@ -10,51 +10,49 @@ using System.Data.Entity.Infrastructure;
 
 namespace WebApplication1.Controllers
 {
-    public class DepartmentController : Controller
+    public class JobController : Controller
     {
-        // GET: Department
         public ActionResult Index()
         {
-            IEnumerable<department> departments;
+            IEnumerable<job> jobs;
             using (var _context = new ProjectDBContext())
             {
-                departments = _context.departments.Include(e => e.employee).ToList();
+                jobs = _context.jobs.ToList();
             }
-            return View(departments);
+            return View(jobs);
         }
 
         public ActionResult Details(Guid id)
         {
-            DepartmentViewModel dep = new DepartmentViewModel();
+            JobViewModel job = new JobViewModel();
             using (var _context = new ProjectDBContext())
             {
-                //dep.department = _context.departments.Include(e => e.manager_id).FirstOrDefault(e => e.department_id == id);
-                dep.department = _context.departments.Include(e => e.employee).FirstOrDefault(e => e.department_id == id);
-                dep.employees = _context.employees.Where(e => e.department_id == id).ToList();
+                job.job = _context.jobs.FirstOrDefault(e => e.job_id == id);
+                job.employees = _context.employees.Where(e => e.job_id == id).ToList();
             }
-            if (dep.department == null)
+            if (job.job == null)
             {
-                RedirectToAction("Index", "Department");// HttpNotFound();
+                RedirectToAction("Index", "Job");// HttpNotFound();
             }
-            return View(dep);
+            return View(job);
         }
 
         public ActionResult New()
         {
-            DepartmentViewModel departmentModel;
+            job jobModel;
             using (var _context = new ProjectDBContext())
             {
-                departmentModel = new DepartmentViewModel
+                jobModel = new job
                 {
-                    employees = _context.employees.ToList(),                 
+                    employees = _context.employees.ToList(),
                 };
             }
-            return View(departmentModel);
+            return View(jobModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(DepartmentViewModel model)
+        public async Task<ActionResult> Create(job model)
         {
             if (!ModelState.IsValid)
             {
@@ -64,52 +62,53 @@ namespace WebApplication1.Controllers
                 }
                 return View("New", model);
             }
-            department newdep;
+            job newjob;
             using (var _context = new ProjectDBContext())
             {
-                newdep = new department
+                newjob = new job
                 {
-                    department_id = Guid.NewGuid(),
-                    department_name = model.department.department_name,
-                    manager_id = model.department.manager_id
+                    job_id = Guid.NewGuid(),
+                    job_title = model.job_title,
+                    min_salary = model.min_salary,
+                    max_salary = model.max_salary
                 };
-                _context.departments.Add(newdep);
+                _context.jobs.Add(newjob);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Edit", "Employee", new { id = newdep.department_id });
+            return RedirectToAction("Edit", "Job", new { id = newjob.job_id });
         }
 
         public ActionResult Edit(Guid id)
         {
-            department dep = new department();
+            job job = new job();
             using (var _context = new ProjectDBContext())
             {
-                dep = _context.departments.FirstOrDefault(e => e.department_id == id);
-                dep.employees = _context.employees.ToList();
+                job = _context.jobs.FirstOrDefault(e => e.job_id == id);
+                job.employees = _context.employees.ToList();
             }
-            if (dep == null)
+            if (job == null)
             {
                 //RedirectToAction("Index", "Department");
                 return HttpNotFound();
             }
-            return View(dep);
+            return View(job);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Save(department dep)
+        public async Task<ActionResult> Save(job dep)
         {
             if (!ModelState.IsValid)
             {
-                RedirectToAction("Edit", "Department", dep.department_id);
+                RedirectToAction("Edit", "Job", dep.job_id);
             }
-            department departmentDB;
+            job jobDB;
             using (var _context = new ProjectDBContext())
             {
-                departmentDB = _context.departments.Single(e => e.department_id == dep.department_id);
-                TryUpdateModel(departmentDB);
+                jobDB = _context.jobs.Single(e => e.job_id == dep.job_id);
+                TryUpdateModel(jobDB);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Index", "Job");
             }
         }
 
@@ -120,12 +119,12 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
-            var department = new department();
+            var job = new job();
             using (var _context = new ProjectDBContext())
             {
-                department = _context.departments.SingleOrDefault(e => e.department_id == id);
+                job = _context.jobs.SingleOrDefault(e => e.job_id == id);
             }
-            if (department == null)
+            if (job == null)
             {
                 return HttpNotFound();
             }
@@ -136,38 +135,38 @@ namespace WebApplication1.Controllers
                     "Delete failed. Try again, and if the problem persists " +
                     "see your system administrator.";
             }
-            return View(department);
+            return View(job);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(department dep)
+        public async Task<ActionResult> DeleteConfirmed(job jb)
         {
             using (var _context = new ProjectDBContext())
             {
-                department department;
-                IEnumerable<employee> employees = _context.employees.Where(e => e.department_id == dep.department_id).ToList();
+                job job;
+                IEnumerable<employee> employees = _context.employees.Where(e => e.job_id == jb.job_id).ToList();
                 if (employees.Count() == 0)
                 {
-                    department = _context.departments.SingleOrDefault(e => e.department_id == dep.department_id);
-                    if (department == null)
+                    job = _context.jobs.SingleOrDefault(e => e.job_id == jb.job_id);
+                    if (job == null)
                     {
                         return RedirectToAction("Index");
                     }
                     try
                     {
-                        _context.departments.Remove(department);
+                        _context.jobs.Remove(job);
                         await _context.SaveChangesAsync();
                         return RedirectToAction("Index");
                     }
                     catch (DbUpdateException /* ex */)
                     {
                         //Log the error (uncomment ex variable name and write a log.)
-                        return RedirectToAction("Delete", new { id = dep.department_id, saveChangesError = true });
+                        return RedirectToAction("Delete", new { id = jb.job_id, saveChangesError = true });
                     }
                 }
                 else
-                    return RedirectToAction("Delete", new { id = dep.department_id, saveChangesError = true }); //CU EROARE CA ARE EMPLOYEES ASOCIATI;                
+                    return RedirectToAction("Delete", new { id = jb.job_id, saveChangesError = true }); //CU EROARE CA ARE EMPLOYEES ASOCIATI;                
             }
         }
     }
