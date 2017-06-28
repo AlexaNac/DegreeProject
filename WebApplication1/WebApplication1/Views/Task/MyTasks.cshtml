@@ -1,0 +1,59 @@
+﻿@model IEnumerable<WebApplication1.Models.task>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "New")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Task name
+        </th>
+        <th>
+            Project
+        </th>
+        <th>
+            Deadline
+        </th>
+        <th>
+            Importance
+        </th>
+        <th>
+            Status
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.task_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.project_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.endDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.importance.caption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status.caption)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.project_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.project_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.project_id })
+
+            </td>
+        </tr>
+    }
+
+</table>

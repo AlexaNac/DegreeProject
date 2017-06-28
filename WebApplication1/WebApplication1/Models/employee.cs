@@ -17,11 +17,11 @@ namespace WebApplication1.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public employee()
         {
-            //this.clients = new HashSet<client>();
-            //this.departments = new HashSet<department>();
-            //this.employees1 = new HashSet<employee>();
-            //this.projects = new HashSet<project>();
-            //this.tasks = new HashSet<task>();
+            this.clients = new HashSet<client>();
+            this.departments = new HashSet<department>();
+            this.employees1 = new HashSet<employee>();
+            this.projects = new HashSet<project>();
+            this.tasks = new HashSet<task>();
         }
     
         public System.Guid employee_id { get; set; }

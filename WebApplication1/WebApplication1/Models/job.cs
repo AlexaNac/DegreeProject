@@ -26,6 +26,6 @@ namespace WebApplication1.Models
         public Nullable<decimal> max_salary { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<employee> employees { get; set; }
+        public  ICollection<employee> employees { get; set; }
     }
 }

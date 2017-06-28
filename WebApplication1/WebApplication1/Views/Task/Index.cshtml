@@ -1,4 +1,5 @@
-﻿
+﻿@model WebApplication1.Models.TaskListViewModel
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +7,116 @@
 
 <h2>Index</h2>
 
+<p>
+    @Html.ActionLink("Create New", "New")
+</p>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#all" data-toggle="tab" aria-expanded="true">All</a></li>
+    <li class=""><a href="#mine" data-toggle="tab" aria-expanded="false">Mine</a></li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+            Sort By <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="#dropdown1" data-toggle="tab">Importance</a></li>
+            <li class="divider"></li>
+            <li><a href="#dropdown2" data-toggle="tab">Deadline</a></li>
+        </ul>
+    </li>
+</ul>
+
+<div id="TabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="all">
+        <table class="table table-striped table-hover" data-type="task">
+            <tr class="success">
+                <th>
+                    Task name
+                </th>
+                <th>
+                    Project
+                </th>
+                <th>
+                    Deadline
+                </th>
+                <th>
+                    Assigned to
+                </th>
+                <th>
+                    Importance
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+
+@foreach (var item in Model.Tasks)
+    {
+        <tr class="active" data-id=@item.task_id >
+            <td >
+                @Html.DisplayFor(modelItem => item.task_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.project_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.endDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee.last_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.importance.caption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status.caption)
+            </td>
+        </tr>
+    }
+        </table>
+    </div>
+
+    <div class="tab-pane fade" id="mine">
+        <table class="table table-striped table-hover" data-type="task">
+            
+            <tr class="success">
+                <th>
+                    Task name
+                </th>
+                <th>
+                    Project
+                </th>
+                <th>
+                    Deadline
+                </th>
+                <th>
+                    Importance
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+
+@foreach (var item in Model.MyTasks)
+{
+                <tr class="active" data-id=@item.task_id>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.task_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.project.project_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.endDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.importance.caption)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.status.caption)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -25,9 +25,12 @@ namespace WebApplication1.Models
         public Nullable<int> time { get; set; }
         public string detail { get; set; }
     
-        public virtual employee employee { get; set; }
-        public virtual importance importance { get; set; }
-        public virtual project project { get; set; }
-        public virtual status status { get; set; }
+        public  employee employee { get; set; }
+        public  importance importance { get; set; }
+        public  project project { get; set; }
+        public  status status { get; set; }
+
+        public  ICollection<employee> employees { get; set; }
+        public  ICollection<status> statusList { get; set; }
     }
 }

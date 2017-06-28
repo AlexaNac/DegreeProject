@@ -1,8 +1,118 @@
-﻿
+﻿@model WebApplication1.Models.task
+
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "New";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div>
+    <h2>Details</h2>
+    <div style="float:right;">
+        <div class="glyphicon glyphicon-pencil"></div>@Html.ActionLink("Edit", "Edit", new { id = Model.task_id })
+        <div class="glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirmDelete"></div>
+    </div>
+</div>
 
-<h2>Details</h2>
+    <div class="form-horizontal">
+        <h4>Here you cand add a new Task</h4>
+        <hr />     
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.task_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.task_name, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.task_name, "", new { @class = "text-danger"  })
+            </div>
+        </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.detail, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.detail, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.detail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.startDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.startDate, "{0:d MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.startDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.endDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.endDate, "{0:d MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.endDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.time, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.time, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.importance.caption, "importance", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.importance.caption, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.importance.caption, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.status.caption, "status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.status.caption, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.status.caption, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.project.project_name, "project", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.project.project_name, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.project.project_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.employee.last_name, "assigned to", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.employee.last_name, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.employee.last_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<div id="confirmDelete" class="modal fade bs-example-modal-sm">
+    <div class="modal-dialog">
+        <div class="modal-content text-center">
+            <div class="modal-body">
+                <h3>Are you sure you want to delete the current task?</h3>
+                @using (Html.BeginForm("DeleteConfirmed", "Task", FormMethod.Post, new { @class = "form-horizontal hidden",id = "deleteConfirmed", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group hidden">
+                        @Html.TextBoxFor(model => model.task_id, new { @class = "form-control hidden", @readonly = "readonly" })
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+                <a class="btn btn-success btn-sm" href="javascript:document.getElementById('deleteConfirmed').submit()">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

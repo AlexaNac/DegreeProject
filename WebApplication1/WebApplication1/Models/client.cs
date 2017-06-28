@@ -26,10 +26,9 @@ namespace WebApplication1.Models
         public string contactPhone { get; set; }
         public Nullable<System.Guid> salesPerson { get; set; }
     
-        public virtual employee employee { get; set; }
+        public employee employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public  ICollection<project> projects { get; set; }
-        public ICollection<employee> employees { get; set; }
-
+        public  ICollection<employee> employees { get; set; }
     }
 }

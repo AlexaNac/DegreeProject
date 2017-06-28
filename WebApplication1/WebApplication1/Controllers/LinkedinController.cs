@@ -36,8 +36,8 @@ namespace WebApplication1.Controllers
                 request.AddParameter("grant_type", "authorization_code");
                 request.AddParameter("code", code);
                 request.AddParameter("redirect_uri", "http://localhost:54480/Linkedin/Authentication");
-                request.AddParameter("client_id", ConfigurationManager.AppSettings["LinkedInClientKey"].ToString());
-                request.AddParameter("client_secret", ConfigurationManager.AppSettings["LinkedInSecretKey"].ToString());
+                request.AddParameter("client_id", ConfigurationManager.AppSettings["LinkedInAPIKey"].ToString());
+                request.AddParameter("client_secret", ConfigurationManager.AppSettings["LinkedInAPISecret"].ToString());
 
                 IRestResponse response = client.Execute(request);
                 JObject content = JObject.Parse(response.Content);

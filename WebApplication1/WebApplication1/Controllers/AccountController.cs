@@ -36,6 +36,7 @@ namespace WebApplication1.Controllers
             }
             return View(users);
         }
+
         [Authorize(Roles = "Admin")]
         public ActionResult Details(String id)
         {
@@ -62,7 +63,7 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(String id, bool? saveChangesError = false)
+        public ActionResult Delete(String id, bool? saveChangesError = false)
         {
             if (id == null)
             {
