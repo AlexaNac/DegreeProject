@@ -3,6 +3,17 @@
     padding-bottom: 20px;
 }
 
+.gi-2x{font-size: 2em;}
+.gi-3x{font-size: 3em;}
+.gi-4x{font-size: 4em;}
+.gi-5x{font-size: 5em;}
+
+.FormArea{
+    resize:none;
+}
+.edit{
+    padding : 1em;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;

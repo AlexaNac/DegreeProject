@@ -1,21 +1,21 @@
 ﻿@model WebApplication1.Models.task
 
 @{
-    ViewBag.Title = "New";
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>New</h2>
+<h2>Edit</h2>
 
 @using (Html.BeginForm("Save", "Task", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        <h4>Here you cand add a new Task</h4>
+        <h4>Here you can edit the information of a task</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.task_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.task_name, "Name",htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.task_name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.task_name, "", new { @class = "text-danger" })
@@ -23,14 +23,14 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.detail, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.detail,"Details", htmlAttributes: new { @class = "control-label col-md-2"       })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.detail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.detail, new { @class = "form-control FormArea", @rows = "10" })
                 @Html.ValidationMessageFor(model => model.detail, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.time, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.time,"Time to finish", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.time, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
@@ -38,14 +38,14 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.status_id, "status", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.status_id, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(m => m.status_id, new SelectList(Model.statusList, "status_id", "caption"), "Select status", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.status_id, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.employee_id, "assigned to", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.employee_id, "Assigned to", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(m => m.employee_id, new SelectList(Model.employees, "employee_id", "last_name"), "Select user", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.employee_id, "", new { @class = "text-danger" })
@@ -56,14 +56,14 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", new { sortedBy = 0 })
 </div>
 
 @section Scripts {

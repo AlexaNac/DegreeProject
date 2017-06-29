@@ -22,29 +22,32 @@ namespace WebApplication1.Controllers
             return View(clients);
         }
 
+
         public ActionResult Details(Guid id)
         {
-            ClientViewModel client = new ClientViewModel();
+            client client = new client();
             using (var _context = new ProjectDBContext())
             {
-                client.client = _context.clients.Include(e => e.employee).FirstOrDefault(e => e.client_id == id);
-                client.projects = _context.projects.Where(e => e.client_id == id).ToList();
+                client = _context.clients.Include(e => e.employee).FirstOrDefault(e => e.client_id == id);
+                client.projects = _context.projects.Include(e => e.employee).Where(e => e.client_id == id).ToList();
             }
-            if (client.client == null)
+            if (client == null)
             {
                 RedirectToAction("Index", "Project");// HttpNotFound();
             }
             return View(client);
         }
 
+
         public ActionResult New()
         {
             ClientViewModel clientModel;
             using (var _context = new ProjectDBContext())
             {
+                string s = "d3f26aa2-4dcd-4cbc-bde5-fb93db32c2a9";
                 clientModel = new ClientViewModel
-                {
-                    employees = _context.employees.ToList(),
+                {                 
+                    employees = _context.employees.Where(e=>e.department_id == new Guid(s)).ToList()
                 };
             }
             return View(clientModel);
@@ -76,7 +79,7 @@ namespace WebApplication1.Controllers
                 _context.clients.Add(newclient);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Edit", "Project", new { id = newclient.client_id });
+            return RedirectToAction("Details", "Client", new { id = newclient.client_id });
         }
 
         public ActionResult Edit(Guid id)
@@ -84,8 +87,9 @@ namespace WebApplication1.Controllers
             client client = new client();
             using (var _context = new ProjectDBContext())
             {
+                string s = "d3f26aa2-4dcd-4cbc-bde5-fb93db32c2a9";
                 client = _context.clients.Include(e => e.employee).FirstOrDefault(e => e.client_id == id);
-                client.employees = _context.employees.ToList();
+                client.employees = _context.employees.Where(e => e.department_id == new Guid(s)).ToList();
             }
             if (client == null)
             {
@@ -109,7 +113,7 @@ namespace WebApplication1.Controllers
                 clientDB = _context.clients.Single(e => e.client_id == clt.client_id);
                 TryUpdateModel(clientDB);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Client");
+                return RedirectToAction("Details", "Client", new { id = clientDB.client_id });
             }
         }
 

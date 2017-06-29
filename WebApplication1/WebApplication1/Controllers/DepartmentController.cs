@@ -25,14 +25,14 @@ namespace WebApplication1.Controllers
 
         public ActionResult Details(Guid id)
         {
-            DepartmentViewModel dep = new DepartmentViewModel();
+            department dep = new department();
             using (var _context = new ProjectDBContext())
             {
                 //dep.department = _context.departments.Include(e => e.manager_id).FirstOrDefault(e => e.department_id == id);
-                dep.department = _context.departments.Include(e => e.employee).FirstOrDefault(e => e.department_id == id);
+                dep = _context.departments.Include(e => e.employee).FirstOrDefault(e => e.department_id == id);
                 dep.employees = _context.employees.Where(e => e.department_id == id).ToList();
             }
-            if (dep.department == null)
+            if (dep == null)
             {
                 RedirectToAction("Index", "Department");// HttpNotFound();
             }
@@ -76,7 +76,7 @@ namespace WebApplication1.Controllers
                 _context.departments.Add(newdep);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Edit", "Employee", new { id = newdep.department_id });
+            return RedirectToAction("Details", "Department", new { id = newdep.department_id });
         }
 
         public ActionResult Edit(Guid id)
@@ -109,7 +109,7 @@ namespace WebApplication1.Controllers
                 departmentDB = _context.departments.Single(e => e.department_id == dep.department_id);
                 TryUpdateModel(departmentDB);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Department");
+                return RedirectToAction("Details", "Department", new { id = departmentDB.department_id });
             }
         }
 

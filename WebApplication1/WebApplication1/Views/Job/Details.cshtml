@@ -1,45 +1,49 @@
-﻿@model WebApplication1.Models.JobViewModel
+﻿@model WebApplication1.Models.job
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Details</h2>
+<div>
+    <h2>Details</h2>
+    <div style="float:right;">
+        <div class="glyphicon glyphicon-pencil edit gi-2x" data-type="Job" data-id=@Model.job_id></div>
+        <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
+    </div>
+</div>
+
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
-    <h4>Here you cand see the details of an department</h4>
+    <h4>Here you cand see the details of a job</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <h4> Department information</h4>
+    <h4> Job information</h4>
     <hr />
 
     <div class="form-group">
-        @Html.LabelFor(model => model.job.job_title, "Job title", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.job_title, "Job title", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.job.job_title, new { @class = "form-control", @readonly = "readonly" })
+            @Html.TextBoxFor(model => model.job_title, new { @class = "form-control", @readonly = "readonly" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.job.min_salary, "Salary (MIN)", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.min_salary, "Salary (MIN)", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.job.min_salary, new { @class = "form-control", @readonly = "readonly" })
+            @Html.TextBoxFor(model => model.min_salary, new { @class = "form-control", @readonly = "readonly" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.job.max_salary, "Salary (MAX)", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.max_salary, "Salary (MAX)", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.job.max_salary, new { @class = "form-control", @readonly = "readonly" })
+            @Html.TextBoxFor(model => model.max_salary, new { @class = "form-control", @readonly = "readonly" })
         </div>
     </div>
     <hr />
     <h4>List of employees</h4>
     <hr />
-    <table class="table">
-        <tr>
-            <th>
-                Employee first name
-            </th>
+    <table class="table table-striped table-hover" data-type="Employee">
+        <tr class="success">
             <th>
                 Employee last name
             </th>
@@ -53,10 +57,8 @@
         </tr>
         @foreach (var item in Model.employees)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.first_name)
-                </td>
+            <tr class="active" data-id=@item.employee_id>
+               
                 <td>
                     @Html.DisplayFor(modelItem => item.last_name)
                 </td>
@@ -76,6 +78,26 @@
 
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.job.job_id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<div id="confirmDelete" class="modal fade bs-example-modal-sm">
+    <div class="modal-dialog">
+        <div class="modal-content text-center">
+            <div class="modal-body">
+                <h3>Are you sure you want to delete the current job?</h3>
+                @using (Html.BeginForm("DeleteConfirmed", "Job", FormMethod.Post, new { @class = "form-horizontal hidden", id = "deleteConfirmed_job", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group hidden">
+                        @Html.TextBoxFor(model => model.job_id, new { @class = "form-control hidden", @readonly = "readonly" })
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+                <a class="btn btn-success btn-sm" href="javascript:document.getElementById('deleteConfirmed_job').submit()">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

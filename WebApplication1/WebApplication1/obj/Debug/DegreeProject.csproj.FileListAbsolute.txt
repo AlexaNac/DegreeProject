@@ -229,3 +229,9 @@ C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplicatio
 C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\SgmlReaderDll.dll
 C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\Thrift.dll
 C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\CsQuery.xml
+C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\itextsharp.dll
+C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\itextsharp.xml
+C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\System.Web.DataVisualization.Design.dll
+C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\System.Web.DataVisualization.dll
+C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\System.Windows.Forms.DataVisualization.Design.dll
+C:\Users\Alexa Nitulescu\Desktop\git\DegreeProject\WebApplication1\WebApplication1\bin\System.Windows.Forms.DataVisualization.dll

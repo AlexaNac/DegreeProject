@@ -24,13 +24,13 @@ namespace WebApplication1.Controllers
 
         public ActionResult Details(Guid id)
         {
-            ProjectViewModel project = new ProjectViewModel();
+            project project = new project();
             using (var _context = new ProjectDBContext())
             {
-                project.project = _context.projects.Include(e => e.employee).Include(e => e.client).FirstOrDefault(e => e.project_id == id);
-                project.tasks = _context.tasks.Where(e => e.project_id == id).ToList();
+                project = _context.projects.Include(e => e.employee).Include(e => e.client).FirstOrDefault(e => e.project_id == id);
+                project.tasks = _context.tasks.Include(e => e.employee).Include(e => e.project).Include(e => e.status).Include(e => e.importance).Where(e => e.project_id == id).ToList();
             }
-            if (project.project == null)
+            if (project == null)
             {
                 RedirectToAction("Index", "Project");// HttpNotFound();
             }
@@ -39,14 +39,24 @@ namespace WebApplication1.Controllers
 
         public ActionResult New()
         {
-            ProjectViewModel projectModel;
+            ProjectViewModel projectModel = new ProjectViewModel();
             using (var _context = new ProjectDBContext())
             {
-                projectModel = new ProjectViewModel
+                //var employee = select e.employee_id, e.last_name, count(project_id) proiecte from dbo.employees e join dbo.projects p on e.employee_id = p.project_manager where e.job_id = '6533434A-2EB6-4B23-8C5A-8CC5CC5EA57D' group by e.employee_id, e.last_name order by proiecte desc;
+
+                projectModel.clients = _context.clients.ToList();
+                var employeesGroups = from p in _context.projects
+                                join e in _context.employees on p.project_manager equals e.employee_id
+                                where e.job_id == new Guid("6533434A-2EB6-4B23-8C5A-8CC5CC5EA57D")
+                                group e by e.employee_id into g
+                                orderby g.Count()
+                                select g;
+                projectModel.employees = new List<employee>();
+                foreach(var group in employeesGroups)
                 {
-                    employees = _context.employees.ToList(),
-                    clients = _context.clients.ToList()
-                };
+                    employee var = _context.employees.FirstOrDefault(e => e.employee_id == group.Key);
+                    projectModel.employees.Add(var);
+                }           
             }
             return View(projectModel);
         }
@@ -77,7 +87,7 @@ namespace WebApplication1.Controllers
                 _context.projects.Add(newproject);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Edit", "Project", new { id = newproject.project_id });
+            return RedirectToAction("Details", "Project", new { id = newproject.project_id });
         }
 
         public ActionResult Edit(Guid id)
@@ -86,7 +96,7 @@ namespace WebApplication1.Controllers
             using (var _context = new ProjectDBContext())
             {
                 project = _context.projects.Include(e => e.employee).Include(e => e.client).FirstOrDefault(e => e.project_id == id);
-                project.employees = _context.employees.ToList();
+                project.employees = _context.employees.Where(e => e.job_id == new Guid("6533434a-2eb6-4b23-8c5a-8cc5cc5ea57d")).ToList();
             }
             if (project == null)
             {
@@ -110,7 +120,7 @@ namespace WebApplication1.Controllers
                 projectDB = _context.projects.Single(e => e.project_id == prj.project_id);
                 TryUpdateModel(projectDB);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Project");
+                return RedirectToAction("Details", "Project", new { id = projectDB.project_id });
             }
         }
 

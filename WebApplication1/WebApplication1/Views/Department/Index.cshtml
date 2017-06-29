@@ -5,18 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table table-striped table-hover ">
+<div>
+    <h2>Index</h2>
+    <div style="float:right; display:inline-block">
+        <div class="glyphicon glyphicon-plus addNew gi-2x" data-type="Department"></div>
+    </div>
+</div>
+<table class="table table-striped table-hover " data-type="Department">
     <tr class="success">
         <th>
             Department name
-        </th>
-        <th>
-            Manager's first name
         </th>
         <th>
             Manager's last name
@@ -24,20 +22,12 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr class="active">
+    <tr class="active" data-id=@item.department_id>
         <td>
             @Html.DisplayFor(modelItem => item.department_name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.employee.first_name)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.employee.last_name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.department_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.department_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.department_id })
         </td>
     </tr>
 }

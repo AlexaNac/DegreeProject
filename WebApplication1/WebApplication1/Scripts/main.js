@@ -1,8 +1,5 @@
 ﻿(function ($) {
     $(document).ready(function () {
-
-        
-
         $('table').on('dblclick', 'tr', function (e) {
             e.preventDefault();
             var $p = $(e.delegateTarget);
@@ -19,32 +16,34 @@
                        .replace('__ID__', id);
 
             window.location.href = window.location.origin + path;
-            });
+        });
+        $('.addNew').on('click', function (e) {
+            e.preventDefault();
+            var $p = $(e.delegateTarget);
+            var $t = $(e.currentTarget);
 
-        //var togglerActiveClass = 'togglerActive';
-        //// Profile subscribe toggler
-        //var $subscribeForm = $('.newsletterFields');
-        //var $subscribeInput = $('#Subscribe');
+            var type = $p.data('type');
+            if (type == 'Account')
+                var path = '/__TYPE__/Register';
+            else
+                var path = '/__TYPE__/New';
+            path = path.replace('__TYPE__', type)
+                   
+            window.location.href = window.location.origin + path;
+        });
+        $('.edit').on('click', function (e) {
+            e.preventDefault();
+            var $p = $(e.delegateTarget);
+            var $t = $(e.currentTarget);
 
-        //$subscribeInput.on('change', function (e) {
-        //    $subscribeForm.toggleClass(togglerActiveClass, this.checked)
-        //}).trigger('change');
+            var type = $p.data('type');
+            var id = $t.data('id');
+            var path = '/__TYPE__/Edit/__ID__';
 
-        //// Profile email toggler
-        //// Simultate checkbox toggler for keeping the form visible after submitting with errors
-        //var $emailForm = $('.sendOnEmail');
-        //var $emailFormTogglerCheckbox = $('#SendEmail');
+            path = path.replace('__TYPE__', type)
+                       .replace('__ID__', id);
 
-        //$('.js-emailToggler').on('click', function (e) {
-        //    e.preventDefault();
-        //    if (!$emailForm.length || !$emailFormTogglerCheckbox.length)
-        //        return;
-
-        //    var state = $emailFormTogglerCheckbox.prop('checked');
-        //    $emailFormTogglerCheckbox.prop('checked', !state);
-
-        //    $emailForm.toggleClass(togglerActiveClass, $emailFormTogglerCheckbox.checked);
-        //});
-
+            window.location.href = window.location.origin + path;
+        });
     });
 })(jQuery)

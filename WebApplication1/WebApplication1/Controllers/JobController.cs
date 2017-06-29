@@ -24,13 +24,13 @@ namespace WebApplication1.Controllers
 
         public ActionResult Details(Guid id)
         {
-            JobViewModel job = new JobViewModel();
+            job job = new job();
             using (var _context = new ProjectDBContext())
             {
-                job.job = _context.jobs.FirstOrDefault(e => e.job_id == id);
+                job = _context.jobs.FirstOrDefault(e => e.job_id == id);
                 job.employees = _context.employees.Where(e => e.job_id == id).ToList();
             }
-            if (job.job == null)
+            if (job == null)
             {
                 RedirectToAction("Index", "Job");// HttpNotFound();
             }
@@ -75,7 +75,7 @@ namespace WebApplication1.Controllers
                 _context.jobs.Add(newjob);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Edit", "Job", new { id = newjob.job_id });
+            return RedirectToAction("Details", "Job", new { id = newjob.job_id });
         }
 
         public ActionResult Edit(Guid id)
@@ -108,7 +108,7 @@ namespace WebApplication1.Controllers
                 jobDB = _context.jobs.Single(e => e.job_id == dep.job_id);
                 TryUpdateModel(jobDB);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Job");
+                return RedirectToAction("Details", "Job", new { id = jobDB.job_id });
             }
         }
 

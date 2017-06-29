@@ -9,7 +9,7 @@ namespace WebApplication1.Models
     {
         public project project { get; set; }
         public IEnumerable<task> tasks;
-        public IEnumerable<employee> employees;
+        public List<employee> employees;
         public IEnumerable<client> clients;
     }
 }

@@ -43,20 +43,16 @@ namespace WebApplication1.Controllers
             if(id == null)
                 RedirectToAction("Index", "Account");// HttpNotFound();
 
-            UserViewModel model = new UserViewModel();
+            AspNetUser model = new AspNetUser();
             using (var _context = new ProjectDBContext())
             {
-                employee employee = _context.employees.Include(e => e.job).Include(e => e.AspNetUser).Include(e => e.department).FirstOrDefault(e => e.user_id == id);
-                AspNetUser user = _context.AspNetUsers.FirstOrDefault(e => e.Id == employee.user_id);
-
-                if (user == null)
+                model = _context.AspNetUsers.FirstOrDefault(e => e.Id == id);
+                model.employee = _context.employees.Include(e => e.job).Include(e => e.AspNetUser).Include(e => e.department).FirstOrDefault(e => e.user_id == id);
+                if (model == null)
                 {
                     RedirectToAction("Index", "Account");// HttpNotFound();
                 }
-                else {
-                    model.employee = employee;
-                    model.user = user;
-                }
+
             } 
             return View(model);
         }

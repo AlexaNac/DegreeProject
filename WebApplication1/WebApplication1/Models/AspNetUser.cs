@@ -36,14 +36,14 @@ namespace WebApplication1.Models
         public int AccessFailedCount { get; set; }
         public string UserName { get; set; }
         public string LinkedinUrl { get; set; }
-    
+        public employee employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public  ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public  ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        public  ICollection<AspNetRole> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<employee> employees { get; set; }
+        public  ICollection<employee> employees { get; set; }
     }
 }

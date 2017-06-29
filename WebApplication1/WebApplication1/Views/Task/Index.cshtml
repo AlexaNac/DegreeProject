@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "New")
-</p>
-
+<div>
+    <h2>Index</h2>
+    <div style="float:right; display:inline-block">
+        <div class="glyphicon glyphicon-plus addNew gi-2x" data-type="Task"></div>
+    </div>
+</div>
 <ul class="nav nav-tabs">
     <li class="active"><a href="#all" data-toggle="tab" aria-expanded="true">All</a></li>
     <li class=""><a href="#mine" data-toggle="tab" aria-expanded="false">Mine</a></li>
@@ -19,16 +19,19 @@
             Sort By <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li><a href="#dropdown1" data-toggle="tab">Importance</a></li>
+            <li>@Html.ActionLink("Importance", "Index", new { sortedBy = 1 }, new { htmlAttribute = new {id = "importanceTab"} })</li>
             <li class="divider"></li>
-            <li><a href="#dropdown2" data-toggle="tab">Deadline</a></li>
+            <li>@Html.ActionLink("Deadline", "Index", new { sortedBy = 2 }, new { htmlAttribute = new { id = "deadlineTab" } })</li>
+            <li class="divider"></li>
+            <li>@Html.ActionLink("Name", "Index", new { sortedBy = 0 }, new { htmlAttribute = new { id = "notSortedTab" } })</li>
+
         </ul>
     </li>
 </ul>
 
 <div id="TabContent" class="tab-content">
     <div class="tab-pane fade active in" id="all">
-        <table class="table table-striped table-hover" data-type="task">
+        <table class="table table-striped table-hover" data-type="Task">
             <tr class="success">
                 <th>
                     Task name

@@ -65,6 +65,10 @@
       <HintPath>..\packages\evernote-cloud-sdk-windows.1.0.8\lib\net40\EvernoteSDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Json.NET.Web, Version=1.0.49.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.NET.Web.1.0.49\lib\portable45-net45+win8+wpa81\Json.NET.Web.dll</HintPath>
       <Private>True</Private>
@@ -331,12 +335,28 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.DataVisualization">
+      <HintPath>..\packages\Microsoft.Chart.Controls.3.5.30729\lib\net35\System.Web.DataVisualization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DataVisualization.Design">
+      <HintPath>..\packages\Microsoft.Chart.Controls.3.5.30729\lib\net35\System.Web.DataVisualization.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms.DataVisualization">
+      <HintPath>..\packages\Microsoft.Chart.Controls.3.5.30729\lib\net35\System.Windows.Forms.DataVisualization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization.Design">
+      <HintPath>..\packages\Microsoft.Chart.Controls.3.5.30729\lib\net35\System.Windows.Forms.DataVisualization.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -448,6 +468,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ChartController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -515,6 +536,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProjectDataModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProjectTasksViewModel.cs" />
     <Compile Include="Models\ProjectViewModel.cs" />
     <Compile Include="Models\status.cs">
       <DependentUpon>ProjectDataModel.tt</DependentUpon>
@@ -641,10 +663,11 @@
     <Content Include="Views\Task\Index.cshtml" />
     <Content Include="Views\Task\New.cshtml" />
     <Content Include="Views\Project\Index.cshtml" />
-    <Content Include="Views\Task\MyTasks.cshtml" />
+    <Content Include="Views\Task\TaskPrioritization.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Chart\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
