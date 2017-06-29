@@ -17,6 +17,7 @@ using Color = System.Drawing.Color;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "HR")]
     public class ChartController : Controller
     {
         public PdfPTable RaportData(PdfPTable tableLayout, List<ProjectViewModel> projects)
@@ -89,8 +90,6 @@ namespace WebApplication1.Controllers
                     model.tasks = tasks;
                     projects.Add(model);
                 }
-
-                activeTasks = _context.tasks.Where(e => e.employee_id == id).ToList();
 
                 var allTasks = from p in _context.projects
                                join t in _context.tasks on p.project_id equals t.project_id

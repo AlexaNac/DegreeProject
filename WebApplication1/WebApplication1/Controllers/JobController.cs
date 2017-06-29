@@ -10,6 +10,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "HR")]
     public class JobController : Controller
     {
         public ActionResult Index()

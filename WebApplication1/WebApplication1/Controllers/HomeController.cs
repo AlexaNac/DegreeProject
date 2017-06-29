@@ -12,9 +12,23 @@ namespace WebApplication1.Controllers
         public ActionResult Index( AspNetUser usr)
         {
             return View();
-            //ViewBag.Username = usr.UserName;
-            //ViewBag.UserId = usr.Id;
-            //return View();
+        }
+        public ActionResult HR(AspNetUser usr)
+        {
+            return View();
+
+        }
+        public ActionResult Sales(AspNetUser usr)
+        {
+            return View();
+        }
+        public ActionResult Administration(AspNetUser usr)
+        {
+            return View();
+        }
+        public ActionResult IT(AspNetUser usr)
+        {
+            return View();
         }
     }
 }

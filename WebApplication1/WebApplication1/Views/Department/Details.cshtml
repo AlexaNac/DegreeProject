@@ -9,7 +9,9 @@
     <h2>Details</h2>
     <div style="float:right;">
         <div class="glyphicon glyphicon-pencil edit gi-2x" data-type="Department" data-id=@Model.department_id></div>
-        <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
+        @if(Model.department_id != new Guid("2905BE54-CCE0-4747-BA4C-0506603F9182") && Model.department_id != new Guid("76BBA8DC-2F3A-4BC7-808B-9B151F205CFE") && Model.department_id != new Guid("ED17B5A3-8C4A-4B05-AE73-DC57B73D3BED") && Model.department_id != new Guid("D3F26AA2-4DCD-4CBC-BDE5-FB93DB32C2A9")) { 
+            <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
+            }
     </div>
 </div>
 @Html.AntiForgeryToken()
@@ -43,7 +45,7 @@
                 Employee last name
             </th>
             <th>
-                Email
+                Job
             </th>
             <th>
                 Hire date
@@ -56,7 +58,7 @@
                     @Html.DisplayFor(modelItem => item.last_name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.email)
+                    @Html.DisplayFor(modelItem => item.job.job_title)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.hire_date, "{0:d MMM yyyy}")

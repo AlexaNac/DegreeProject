@@ -8,27 +8,27 @@
 <div>
     <h4>Details and account manager</h4>
     <div class="form-group">
-        <a href=@ViewBag.Link class="btn btn-default">Link with LinkedIN</a>
+        <a href=@ViewBag.Link class="btn btn-succes">Link with LinkedIN</a>
     </div>
     <hr />
     <div class="form-group">
-        <div>@Html.LabelFor(m => m.Employee.first_name, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.LabelFor(m => m.Employee.first_name, "First name", new { @class = "col-md-4 control-label" })</div>
         <div>@Html.TextBoxFor(m => m.Employee.first_name, new { @class = "form-control", @readonly = "readonly" })</div>
     </div>
     <div class="form-group">
-        <div>@Html.LabelFor(m => m.Employee.last_name, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.LabelFor(m => m.Employee.last_name, "Last name", new { @class = "col-md-4 control-label" })</div>
         <div>@Html.TextBoxFor(m => m.Employee.last_name, new { @class = "form-control", @readonly = "readonly" })</div>
     </div>
     <div class="form-group">
-        <div>@Html.LabelFor(m => m.Employee.hire_date, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.LabelFor(m => m.Employee.hire_date, "Hire date", new { @class = "col-md-4 control-label" })</div>
         <div>@Html.TextBoxFor(m => m.Employee.hire_date, new { @class = "form-control", @readonly = "readonly" })</div>
     </div>
     <div class="form-group">
-        <div>@Html.LabelFor(m => m.User.UserName, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.LabelFor(m => m.User.UserName, "Username", new { @class = "col-md-4 control-label" })</div>
         <div>@Html.TextBoxFor(m => m.User.UserName, new { @class = "form-control", @readonly = "readonly" })</div>
     </div>
     <div class="form-group">
-        <div>@Html.LabelFor(m => m.User.Email, new { @class = "col-md-4 control-label" })</div>
+        <div>@Html.LabelFor(m => m.User.Email, "Email",new { @class = "col-md-4 control-label" })</div>
         <div>@Html.TextBoxFor(m => m.User.Email, new { @class = "form-control", @readonly = "readonly" })</div>
     </div>
     <div class="form-group">

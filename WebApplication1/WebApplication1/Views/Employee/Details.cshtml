@@ -8,92 +8,95 @@
 <div>
     <h2>Details</h2>
     <div style="float:right;">
+        @if(Model.department_id == new Guid("76BBA8DC-2F3A-4BC7-808B-9B151F205CFE")) {
+            <div class="glyphicon glyphicon-list-alt report gi-2x" data-id=@Model.employee_id></div>
+        }
         <div class="glyphicon glyphicon-pencil edit gi-2x" data-type="Employee" data-id=@Model.employee_id></div>
         <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
     </div>
 </div>
-    @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        <h4>Here you cand see the details of an employee</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.first_name,"First name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.first_name, new { @class = "form-control", @readonly = "readonly" } )
-            </div>
+@Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Here you cand see the details of an employee</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.first_name, "First name", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.first_name, new { @class = "form-control", @readonly = "readonly" })
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.last_name,"Last name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.last_name, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.email, "Email", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.email, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_number, "Phone number", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.phone_number, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.hire_date, "Hire date", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.hire_date, "{0:d MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.birth_date, "Birth date", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.birth_date, "{0:d MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.salary, "Salary", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.salary, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.job_id, "Job", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.job.job_title, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.department_id, "Department", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.department.department_name, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.manager_id, "Manager", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.employee1.first_name, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.user_id, "User", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.AspNetUser.UserName, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-        </div>
-      
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.last_name, "Last name", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.last_name, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.email, "Personal Email", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.email, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.phone_number, "Phone number", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.phone_number, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.hire_date, "Hire date", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.hire_date, "{0:d MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.birth_date, "Birth date", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.birth_date, "{0:d MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.salary, "Salary", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.salary, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.job_id, "Job", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.job.job_title, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.department_id, "Department", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.department.department_name, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.manager_id, "Manager", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.employee1.first_name, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.user_id, "User", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.AspNetUser.UserName, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

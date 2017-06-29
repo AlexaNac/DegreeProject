@@ -10,8 +10,10 @@ using System.Data.Entity.Infrastructure;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "Sales")]
     public class ProjectController : Controller
     {
+
         public ActionResult Index()
         {
             IEnumerable<project> projects;

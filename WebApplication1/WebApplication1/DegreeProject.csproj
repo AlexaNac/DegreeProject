@@ -608,7 +608,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Administration.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -664,6 +664,9 @@
     <Content Include="Views\Task\New.cshtml" />
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Task\TaskPrioritization.cshtml" />
+    <Content Include="Views\Home\HR.cshtml" />
+    <Content Include="Views\Home\IT.cshtml" />
+    <Content Include="Views\Home\Sales.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

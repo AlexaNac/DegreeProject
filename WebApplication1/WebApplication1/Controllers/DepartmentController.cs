@@ -12,6 +12,7 @@ namespace WebApplication1.Controllers
 {
     public class DepartmentController : Controller
     {
+        [Authorize(Roles = "HR")]
         // GET: Department
         public ActionResult Index()
         {
@@ -30,7 +31,7 @@ namespace WebApplication1.Controllers
             {
                 //dep.department = _context.departments.Include(e => e.manager_id).FirstOrDefault(e => e.department_id == id);
                 dep = _context.departments.Include(e => e.employee).FirstOrDefault(e => e.department_id == id);
-                dep.employees = _context.employees.Where(e => e.department_id == id).ToList();
+                dep.employees = _context.employees.Where(e => e.department_id == id).Include(e => e.job).ToList();
             }
             if (dep == null)
             {

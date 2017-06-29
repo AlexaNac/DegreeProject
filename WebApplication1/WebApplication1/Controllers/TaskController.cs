@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "IT")]
     public class TaskController : Controller
     {
         public ActionResult Index(int sortedBy)
@@ -59,9 +60,11 @@ namespace WebApplication1.Controllers
             TaskViewModel taskModel;
             using (var _context = new ProjectDBContext())
             {
+                Guid pm = new Guid("6533434A-2EB6-4B23-8C5A-8CC5CC5EA57D");
+                Guid dev = new Guid("24957F95-79A8-4B49-B3E5-C113C04C9939");
                 taskModel = new TaskViewModel
                 {
-                    employees = _context.employees.ToList(),
+                    employees = _context.employees.Where(e => e.job_id == pm  || e.job_id == dev ).ToList(),
                     projects = _context.projects.ToList(),
                     importanceList = _context.importances.ToList(),
                     statusList = _context.status.ToList()
@@ -110,10 +113,13 @@ namespace WebApplication1.Controllers
         public ActionResult Edit(Guid id)
         {
             task task = new task();
+            Guid pm = new Guid("6533434A-2EB6-4B23-8C5A-8CC5CC5EA57D");
+            Guid dev = new Guid("24957F95-79A8-4B49-B3E5-C113C04C9939");
+                 
             using (var _context = new ProjectDBContext())
             {
                 task = _context.tasks.FirstOrDefault(e => e.task_id == id);
-                task.employees = _context.employees.ToList();
+                task.employees = _context.employees.Where(e => e.job_id == pm || e.job_id == dev).ToList();
                 task.statusList = _context.status.ToList();
             }
             if (task == null)

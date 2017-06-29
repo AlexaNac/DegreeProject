@@ -10,6 +10,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize(Roles = "Sales")]
     public class ClientController : Controller
     {
         public ActionResult Index()

@@ -12,6 +12,7 @@ using WebApplication1.Models;
 using System.Data.Entity;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace WebApplication1.Controllers
 {
@@ -158,20 +159,30 @@ namespace WebApplication1.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+            string userid = User.Identity.GetUserId();
 
             switch (result)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                case SignInStatus.Success:               
+                    if (User.IsInRole("IT"))
+                        return RedirectToAction("IT", "Home");
+                    if (User.IsInRole("Sales"))
+                        return RedirectToAction("Sales", "Home");
+                    if (User.IsInRole("HR"))
+                        return RedirectToAction("HR", "Home");
+                    if (User.IsInRole("Admin"))
+                        return RedirectToAction("Administration", "Home");
+                    return RedirectToAction("Login", "Account");        
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -231,7 +242,15 @@ namespace WebApplication1.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
-            return View();
+            RegisterViewModel model;
+            using (ProjectDBContext _context = new ProjectDBContext())
+            {
+                 model = new RegisterViewModel
+                {
+                    Employees = _context.employees.ToList()
+                };
+            }
+            return View(model);
         }
 
         //
@@ -243,7 +262,7 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -251,10 +270,24 @@ namespace WebApplication1.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
+
+                    //role assignation
+                    var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+                    await roleManager.CreateAsync(new IdentityRole("CanManageSchedules"));
+                    await UserManager.AddToRoleAsync(user.Id, model.roleType);
+
+                    using (ProjectDBContext _context = new ProjectDBContext())
+                    {
+                        employee emp = _context.employees.FirstOrDefault(e => e.employee_id == new Guid(model.employee_id));
+                        emp.user_id = user.Id;
+                        TryUpdateModel(emp);
+                        await _context.SaveChangesAsync();
+                    }
+
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    await UserManager.SendEmailAsync(user.Id, "Account Confirmation", "Hello and Welcome! Please confirm your account for the application ERPAS by clicking <a href=\"" + callbackUrl + "\">here. Thank you!</a>");
                     return RedirectToAction("Index", "Account");
                 }
                 AddErrors(result);

@@ -23,9 +23,32 @@
                 @Html.ActionLink("ERPAS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    @*<li>@Html.ActionLink("Accounts", "About", "Home")</li>*@                 
+                <ul class="nav navbar-nav">                   
+                    @if (User.IsInRole("IT"))
+                    {
+                        <li>@Html.ActionLink("Home", "IT", "Home")</li>
+                        <li>@Html.ActionLink("Tasks","Index", "Task", new { sortedBy = 0 } , new { @class = "" })</li>                 
+                    }
+
+                    @if (User.IsInRole("Sales"))
+                    {
+                        <li>@Html.ActionLink("Home", "Sales", "Home")</li>
+                        <li>@Html.ActionLink("Projects", "Index", "Project")</li>
+                        <li>@Html.ActionLink("Clients", "Index", "Client")</li>
+                    }
+
+                    @if (User.IsInRole("HR"))
+                    {
+                        <li>@Html.ActionLink("Home", "HR", "Home")</li>
+                        <li>@Html.ActionLink("Employees", "Index", "Employee")</li>
+                        <li>@Html.ActionLink("Departments", "Index", "Department")</li>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Home", "Administration", "Home")</li>
+                        <li>@Html.ActionLink("Accounts", "Index", "Account")</li>
+                    }
                 </ul>
                 <ul class="navbar-text navbar-right">
                     <li class="dropdown-toggle" id="usernameButton" data-toggle="dropdown">

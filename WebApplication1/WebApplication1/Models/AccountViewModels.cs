@@ -49,8 +49,9 @@ namespace WebApplication1.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Username")]
-        public string Username { get; set; }
+        [Display(Name = "Email")]
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -69,10 +70,6 @@ namespace WebApplication1.Models
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Usename")]
-        public string Username { get; set; }
-
-        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -83,6 +80,19 @@ namespace WebApplication1.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
+        [Display(Name = "Employee")]
+        public IEnumerable<employee> Employees; //{ get; set; }
+
+        [Required]
+        [Display(Name = "Employee")]
+        public string employee_id { get; set; }
+
+        [Required]
+        public List<string> roles = new List<string>(){ "IT", "HR", "Sales", "Administration" };
+
+        [Required]
+        public string roleType { get; set; }
     }
 
 
