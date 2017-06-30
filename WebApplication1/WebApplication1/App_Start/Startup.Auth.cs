@@ -47,11 +47,11 @@ namespace WebApplication1
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            app.UseLinkedInAuthentication
-            (
-                clientId: ConfigurationManager.AppSettings["LinkedInAPIKey"].ToString(),
-                clientSecret: ConfigurationManager.AppSettings["LinkedInAPISecret"].ToString()
-            );
+            //app.UseLinkedInAuthentication
+            //(
+            //    clientId: ConfigurationManager.AppSettings["LinkedInAPIKey"].ToString(),
+            //    clientSecret: ConfigurationManager.AppSettings["LinkedInAPISecret"].ToString()
+            //);
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(

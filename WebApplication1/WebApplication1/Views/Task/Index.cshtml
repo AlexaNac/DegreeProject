@@ -19,13 +19,16 @@
             Sort By <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li>@Html.ActionLink("Importance", "Index", new { sortedBy = 1 }, new { htmlAttribute = new {id = "importanceTab"} })</li>
+            <li>@Html.ActionLink("Importance", "Index", new { sortedBy = 1 }, new { htmlAttribute = new { id = "importanceTab" } })</li>
             <li class="divider"></li>
             <li>@Html.ActionLink("Deadline", "Index", new { sortedBy = 2 }, new { htmlAttribute = new { id = "deadlineTab" } })</li>
             <li class="divider"></li>
             <li>@Html.ActionLink("Name", "Index", new { sortedBy = 0 }, new { htmlAttribute = new { id = "notSortedTab" } })</li>
 
         </ul>
+    </li>
+    <li>
+        <a href="" data-toggle="modal" aria-expanded="false" data-target="#prioritize">Prioritize for me</a>
     </li>
 </ul>
 
@@ -53,35 +56,35 @@
                 </th>
             </tr>
 
-@foreach (var item in Model.Tasks)
-    {
-        <tr class="active" data-id=@item.task_id >
-            <td >
-                @Html.DisplayFor(modelItem => item.task_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.project.project_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.endDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.employee.last_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.importance.caption)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.status.caption)
-            </td>
-        </tr>
-    }
+            @foreach (var item in Model.Tasks)
+            {
+                <tr class="active" data-id=@item.task_id>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.task_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.project.project_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.endDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.employee.last_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.importance.caption)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.status.caption)
+                    </td>
+                </tr>
+            }
         </table>
     </div>
 
     <div class="tab-pane fade" id="mine">
         <table class="table table-striped table-hover click" data-type="task">
-            
+
             <tr class="success">
                 <th>
                     Task name
@@ -100,8 +103,8 @@
                 </th>
             </tr>
 
-@foreach (var item in Model.MyTasks)
-{
+            @foreach (var item in Model.MyTasks)
+            {
                 <tr class="active" data-id=@item.task_id>
                     <td>
                         @Html.DisplayFor(modelItem => item.task_name)
@@ -121,5 +124,20 @@
                 </tr>
             }
         </table>
+    </div>
+</div>
+
+<div id="prioritize" class="modal fade bs-example-modal-sm">
+    <div class="modal-dialog">
+        <div class="modal-content text-center">
+            <div class="modal-body">
+                <h3>Please enter the number of hours that you want</h3>
+                <input type="number" class="form-control" id="prioritizeInput" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+                <a class="btn btn-success btn-sm prioritizeButton">Prioritize</a>
+            </div>
+        </div>
     </div>
 </div>

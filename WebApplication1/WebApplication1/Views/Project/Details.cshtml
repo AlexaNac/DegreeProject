@@ -4,21 +4,27 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div>
-    <h2>Details</h2>
-    <div style="float:right;">
-        <div class="glyphicon glyphicon-pencil edit gi-2x" data-type="Project" data-id=@Model.project_id></div>
-        <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
+<header id="pageHeader" class="row">
+    <div class="col-xs-8 headings">
+        <h2>Details</h2>
+        <h5>Here you cand see the details of a project</h5>
     </div>
-</div>
+    <ul class="col-xs-4 pageMeta">
+        <li>
+            <a href="#" class="glyphicon glyphicon-pencil edit" data-type="Project" data-id=@Model.project_id></a>
+        </li>
+        <li>
+            <a href="#" class="glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirmDelete"></a>
+        </li>
+    </ul>
+</header>
+
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
-    <h4>Here you can see the details of a project</h4>
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     <h4> Project information</h4>
     <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <div class="form-group">
         @Html.LabelFor(model => model.project_name, "Project name", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -36,7 +42,7 @@
         @Html.LabelFor(model => model.client.client_name, "Client", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.TextBoxFor(model => model.client.client_name, new { @class = "form-control", @readonly = "readonly" })
-        </div> 
+        </div>
     </div>
     <hr />
     <h4>List of tasks</h4>

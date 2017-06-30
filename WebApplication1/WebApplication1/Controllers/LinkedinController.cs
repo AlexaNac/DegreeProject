@@ -12,7 +12,6 @@ using System.Web.Mvc;
 using System.Xml;
 using WebApplication1.Models;
 using Microsoft.AspNet.Identity;
-using System.Configuration;
 
 namespace WebApplication1.Controllers
 {
@@ -36,8 +35,8 @@ namespace WebApplication1.Controllers
                 request.AddParameter("grant_type", "authorization_code");
                 request.AddParameter("code", code);
                 request.AddParameter("redirect_uri", "http://localhost:54480/Linkedin/Authentication");
-                request.AddParameter("client_id", ConfigurationManager.AppSettings["LinkedInAPIKey"].ToString());
-                request.AddParameter("client_secret", ConfigurationManager.AppSettings["LinkedInAPISecret"].ToString());
+                request.AddParameter("client_id", "867v0zbln7wqzu");
+                request.AddParameter("client_secret", "HOa0hQOb7396VsH4");
 
                 IRestResponse response = client.Execute(request);
                 JObject content = JObject.Parse(response.Content);
@@ -63,8 +62,7 @@ namespace WebApplication1.Controllers
                 }
                 else
                 {
-                    LoginUser(profile); //trebuie customizat cumva sa trimita user ul mai departe pt a putea avea account.
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Manage");
                 }
             }
             catch (Exception e)
@@ -72,6 +70,7 @@ namespace WebApplication1.Controllers
                 throw e;
             }
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -87,26 +86,28 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Index", "Manage");
         }
 
-        [HttpPost]
-        public ActionResult LoginUser(String profile)
-        {
-            using (var _context = new ProjectDBContext())
-           {
-                AspNetUser user = _context.AspNetUsers.FirstOrDefault(e => e.LinkedinUrl == profile);
-                if (user != null) {
-                    return RedirectToAction("Index", "Home", new { usr = user});
-
-            /*public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
-            {
-                // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-                var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-                // Add custom user claims here
-                return userIdentity;
-            }*/
-                }
-                else
-                    return RedirectToAction("Login", "Account");
-            }
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> LoginUser(String profile)
+        //{
+        //    using (var _context = new ProjectDBContext())
+        //    {
+        //        AspNetUser user = _context.AspNetUsers.FirstOrDefault(e => e.LinkedinUrl == profile);
+        //        if (user != null)
+        //        { //login
+        //            LoginViewModel model = new LoginViewModel
+        //            {
+        //                Email = user.Email,
+        //                Password = user.PasswordHash,
+        //                RememberMe = false
+        //            };
+        //            AccountController ac = new AccountController();
+        //            await ac.Login(model, null);
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        else
+        //            return RedirectToAction("Login", "Account");
+        //    }
+        //}
     }
 }

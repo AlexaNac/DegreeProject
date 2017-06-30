@@ -79,5 +79,12 @@
             var path = '/Manage/Index';
             window.location.href = window.location.origin + path;
         });
+        $('.prioritizeButton').on('click', function (e) {
+            e.preventDefault();
+            debugger;
+            var val = $('#prioritizeInput').val();
+            var path = '/Task/TaskPrioritization/?period=' + val;
+            window.location.href = window.location.origin + path;
+        });
     });
 })(jQuery)

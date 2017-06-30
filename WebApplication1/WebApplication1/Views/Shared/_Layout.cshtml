@@ -20,14 +20,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("ERPAS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <div class="navbar-brand"><p>ERPAS</p></div>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">                   
+                <ul class="nav navbar-nav">
                     @if (User.IsInRole("IT"))
                     {
                         <li>@Html.ActionLink("Home", "IT", "Home")</li>
-                        <li>@Html.ActionLink("Tasks","Index", "Task", new { sortedBy = 0 } , new { @class = "" })</li>                 
+                        <li>@Html.ActionLink("Tasks", "Index", "Task", new { sortedBy = 0 }, new { @class = "" })</li>
                     }
 
                     @if (User.IsInRole("Sales"))
@@ -55,12 +55,13 @@
                         <span>@User.Identity.GetUserName()</span>
                         <span class="glyphicon glyphicon-user" style="color:white;font-size: 10px;position: relative;right: -10px;top: -1px;"></span>
                     </li>
-                   @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-left hidden" })){@Html.AntiForgeryToken()}
-                   <ul class="dropdown-menu" role="menu" id="dropdown">
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-left hidden" }))
+                    {@Html.AntiForgeryToken()}
+                    <ul class="dropdown-menu" role="menu" id="dropdown">
                         <li>@Html.ActionLink("Account", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
                         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                     </ul>
-                   
+
                 </ul>
             </div>
         </div>

@@ -5,25 +5,32 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div>
-    <h2>Details</h2>
-    <div style="float:right;">
-        <div class="glyphicon glyphicon-pencil edit gi-2x" data-type="Department" data-id=@Model.department_id></div>
-        @if(Model.department_id != new Guid("2905BE54-CCE0-4747-BA4C-0506603F9182") && Model.department_id != new Guid("76BBA8DC-2F3A-4BC7-808B-9B151F205CFE") && Model.department_id != new Guid("ED17B5A3-8C4A-4B05-AE73-DC57B73D3BED") && Model.department_id != new Guid("D3F26AA2-4DCD-4CBC-BDE5-FB93DB32C2A9")) { 
-            <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
-            }
+<header id="pageHeader" class="row">
+    <div class="col-xs-8 headings">
+        <h2>Details</h2>
+        <h5>Here you cand see the details of a department</h5>
     </div>
-</div>
+    <ul class="col-xs-4 pageMeta">
+        <li>
+            <a href="#" class="glyphicon glyphicon-pencil edit" data-type="Department" data-id=@Model.department_id></a>
+        </li>
+        @if (Model.department_id != new Guid("2905BE54-CCE0-4747-BA4C-0506603F9182") && Model.department_id != new Guid("76BBA8DC-2F3A-4BC7-808B-9B151F205CFE") && Model.department_id != new Guid("ED17B5A3-8C4A-4B05-AE73-DC57B73D3BED") && Model.department_id != new Guid("D3F26AA2-4DCD-4CBC-BDE5-FB93DB32C2A9"))
+        {
+            <li>
+                <a href="#" class="glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirmDelete"></a>
+            </li>
+        }
+    </ul>
+</header>
+
+
 @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Here you cand see the details of an department</h4>
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     <h4> Department information</h4>
     <hr />
-
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.department_name, "Department name", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -66,12 +73,12 @@
             </tr>
         }
 
-    </table> 
-    
+    </table>
+
 </div>
-    <p>
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
 
 <div id="confirmDelete" class="modal fade bs-example-modal-sm">
     <div class="modal-dialog">

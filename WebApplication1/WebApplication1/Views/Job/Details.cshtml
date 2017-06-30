@@ -4,26 +4,31 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div>
-    <h2>Details</h2>
-    <div style="float:right;">
-        <div class="glyphicon glyphicon-pencil edit gi-2x" data-type="Job" data-id=@Model.job_id></div>
+<header id="pageHeader" class="row">
+    <div class="col-xs-8 headings">
+        <h2>Details</h2>
+        <h5>Here you cand see the details of a job</h5>
+    </div>
+    <ul class="col-xs-4 pageMeta">
+        <li>
+            <a href="#" class="glyphicon glyphicon-pencil edit" data-type="Job" data-id=@Model.job_id></a>
+        </li>
         @if (Model.job_id != new Guid("6533434A-2EB6-4B23-8C5A-8CC5CC5EA57D") && Model.job_id != new Guid("24957F95-79A8-4B49-B3E5-C113C04C9939"))
         {
-            <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
+            <li>
+                <a href="#" class="glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirmDelete"></a>
+            </li>
         }
-    </div>
-</div>
+    </ul>
+</header>
 
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
-    <h4>Here you cand see the details of a job</h4>
+    <h4></h4>
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     <h4> Job information</h4>
     <hr />
-
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.job_title, "Job title", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -61,7 +66,7 @@
         @foreach (var item in Model.employees)
         {
             <tr class="active" data-id=@item.employee_id>
-               
+
                 <td>
                     @Html.DisplayFor(modelItem => item.last_name)
                 </td>

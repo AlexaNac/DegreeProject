@@ -4,22 +4,27 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div>
-    <h2>Details</h2>
-    <div style="float:right;">
-        <div class="glyphicon glyphicon-pencil edit gi-2x" data-type="Client" data-id=@Model.client_id ></div>
-        <div class="glyphicon glyphicon-trash delete gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
+<header id="pageHeader" class="row">
+    <div class="col-xs-8 headings">
+        <h2>Details</h2>
+        <h5>Here you cand see the details of an client</h5>
     </div>
-</div>
+    <ul class="col-xs-4 pageMeta">
+        <li>
+            <a href="#" class="glyphicon glyphicon-pencil edit" data-type="Client" data-id=@Model.client_id></a>
+        </li>
+        <li>
+            <a href="#" class="glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirmDelete"></a>
+        </li>
+    </ul>
+</header>
 
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
-    <h4>Here you cand see the details of an client</h4>
+    <hr />
+    <h4> Client information</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <h4> Client information</h4>
-    <hr/>
     <div class="form-group">
         @Html.LabelFor(model => model.client_name, "Client name", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -54,7 +59,7 @@
             </th>
             <th>
                 Project manager
-            </th>            
+            </th>
         </tr>
         @foreach (var item in Model.projects)
         {
@@ -64,7 +69,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.employee.last_name)
-                </td>              
+                </td>
             </tr>
         }
     </table>

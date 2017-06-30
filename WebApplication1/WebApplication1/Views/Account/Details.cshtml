@@ -10,15 +10,28 @@
         <div class="glyphicon glyphicon-trash gi-2x" data-toggle="modal" data-target="#confirmDelete"></div>
     </div>
 </div>
+
+
+<header id="pageHeader" class="row">
+    <div class="col-xs-8 headings">
+        <h2>Details</h2>
+        <h5>Here you can see the details for the account</h5>
+    </div>
+    <ul class="col-xs-4 pageMeta">
+        <li>
+            <a href="#" class="glyphicon glyphicon-pencil edit" data-type="Account" data-id=@Model.Id></a>
+        </li>
+        <li>
+            <a href="#" class="glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirmDelete"></a>
+        </li>
+    </ul>
+</header>
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
-    <h4>Here you cand see the details of an account</h4>
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     <h4> Account information</h4>
     <hr />
-
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.UserName, "Username", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -37,21 +50,21 @@
     <hr />
 
     <div class="form-group">
-        @Html.LabelFor(model => model.employee.first_name,"First name", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.employee.first_name, "First name", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.TextBoxFor(model => model.employee.first_name, new { @class = "form-control", @readonly = "readonly" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.employee.last_name,"Last name", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.employee.last_name, "Last name", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.TextBoxFor(model => model.employee.last_name, new { @class = "form-control", @readonly = "readonly" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.employee.hire_date,"Hire date", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.employee.hire_date, "Hire date", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.TextBoxFor(model => model.employee.hire_date, "{0:d MMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
         </div>

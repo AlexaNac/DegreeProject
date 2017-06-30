@@ -201,50 +201,44 @@ namespace WebApplication1.Controllers
             }
         }
 
-     /*   public ActionResult TaskPrioritization(int perioada)
+        public ActionResult TaskPrioritization(int period)
         {
+            List<task> finale = new List<task>();
             using (var _context = new ProjectDBContext())
             {
                 TaskViewModel model = new TaskViewModel();
                 string user_id = User.Identity.GetUserId();
-                employee emp = _context.employees.FirstOrDefault(e=>e.user_id== user_id);
 
-                List<task> tasks = _context.tasks.Where(e => e.time <= perioada).Where(e => e.employee_id == emp.employee_id).OrderBy(e=>e.time).ToList();
-                //var hours = from t in _context.tasks
-                //            where t.time <= perioada / 2 && t.employee_id == emp.employee_id
-                //            orderby t.task_id
-                //            select new { id = t.task_id, time = t.time };
+                employee emp = _context.employees.FirstOrDefault(e => e.user_id == user_id);
 
-                //var importance = from t in _context.tasks
-                //          where t.time <= perioada / 2 && t.employee_id == emp.employee_id
-                //          orderby t.task_id
-                //          select new {id = t.task_id, importance = t.importance_id };
+                List<task> tasks = _context.tasks.Include(e => e.employee).Include(e => e.project).Include(e => e.status).Include(e => e.importance).Where(e => e.time <= period / 2).Where(e => e.employee_id == emp.employee_id).OrderBy(e => e.time).ToList();
+
                 int nr = tasks.Count;
                 int auxnr = nr + 1;
 
                 int[] time = new int[auxnr];
 
                 for (int i = 1; i <= nr; i++)
-                    time[i] = tasks[i-1].time ?? default(int);
+                    time[i] = tasks[i - 1].time ?? default(int);
 
-                int[][] matrix = new int[nr+1][];
+                int[][] matrix = new int[nr + 1][];
                 for (int i = 0; i <= nr; i++)
-                    matrix[i] = new int[perioada+1];
+                    matrix[i] = new int[period + 1];
 
-                for (int i = 0; i <= perioada; i++)
+                for (int i = 0; i <= period; i++)
                 {
-                    matrix[0][i] = 1;
+                    matrix[0][i] = 0;
                     for (int j = 1; j <= nr; j++)
                     {
                         matrix[j][0] = 0;
-                        for (int gr = 1; gr <= perioada; gr++)
+                        for (int gr = 1; gr <= period; gr++)
                         {
                             if (time[j] <= gr)
                             {
-                                int castig = 10/tasks[j-1].importance_id ?? default(int);
-                                if (castig + matrix[j-1][gr - time[i]] > matrix[j - 1][gr]) //iese din range la scaderea timpului din gr.......
+                                int castig = 10 / tasks[j - 1].importance_id ?? default(int);
+                                if (castig + matrix[j - 1][gr - time[j]] > matrix[j - 1][gr])
                                 {
-                                    matrix[j][gr] = castig + matrix[j - 1][gr - time[i]];
+                                    matrix[j][gr] = castig + matrix[j - 1][gr - time[j]];
                                 }
                                 else
                                 {
@@ -258,9 +252,25 @@ namespace WebApplication1.Controllers
                         }
                     }
                 }
+                int max = matrix[nr][period];
+                int grr = period;
+                int ii = nr;
+
+                while (grr > 0 && ii > 0)
+                {
+                    int castig = 10 / tasks[ii - 1].importance_id ?? default(int);
+                    if (time[ii] <= grr)
+                        if (matrix[ii][grr] == castig + matrix[ii - 1][grr - time[ii]])
+                        {
+                            //System.out.print(ii + " ");
+                            finale.Add(tasks[ii - 1]);
+                            grr = grr - time[ii];
+
+                        }
+                    ii--;
+                }
             }
-            return View();
+            return View(finale);
         }
-        */
     }
 }
